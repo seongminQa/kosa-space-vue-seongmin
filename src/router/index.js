@@ -1,20 +1,18 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+// import LoginView from '@/views/Home/Login.vue'
+import Home from './Home'
+import Admin from './Admin'
+import Trainee from './Trainee'
+
+/* 
+처음 나오는 화면 url이 '/'와 같은 경우는 항상(또는 자주) 쓰이는 페이지이기 때문에
+위에서 import하여 사용하는 것이 효율적
+*/
 
 const routes = [
-  {
-    path: '/',
-    name: 'home',
-    component: HomeView
-  },
-  {
-    path: '/about',
-    name: 'about',
-    // route level code-splitting
-    // this generates a separate chunk (about.[hash].js) for this route
-    // which is lazy-loaded when the route is visited.
-    component: () => import(/* webpackChunkName: "about" */ '../views/AboutView.vue')
-  }
+  ...Home,
+  ...Admin,
+  ...Trainee
 ]
 
 const router = createRouter({

@@ -1,9 +1,16 @@
 <template>
-<div></div>
+    <div class="card">
+        <div class="card-header">ReferenceDate</div>
+        <div class="card-body">
+
+        </div>
+    </div>
 </template>
 
 <script setup>
+
 </script>
 
 <style scoped>
+
 </style>
