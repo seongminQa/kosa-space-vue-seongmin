@@ -1,35 +1,31 @@
-const routes = [
-    {
-        path: '/',
-        name: 'home',
-        component: () => import(/* webpackChunkName: "home" */ '@/views/Home/Login.vue'),
-        redirect: '/login'
-    },
-    {
-      path: '/login',
-      name: 'login',
-      component: () => import(/* webpackChunkName: "home" */ '@/views/Home/Login.vue')
-    },
-    {
-      path: '/signup',
-      name: 'signup',
-      component: () => import(/* webpackChunkName: "home" */ '@/views/Home/SignUp.vue')
-    },
-    {
-      path: '/findid',
-      name: 'findid',
-      component: () => import(/* webpackChunkName: "home" */ '@/views/Home/FindId.vue')
-    },
-    {
-      path: '/findpassword',
-      name: 'findpassword',
-      component: () => import(/* webpackChunkName: "home" */ '@/views/Home/FindPassword.vue')
-    },
-    {
-      path: '/mypage',
-      name: 'mypage',
-      component: () => import(/* webpackChunkName: "admin" */ '@/views/Admin/MyPage/UpdateAdminView.vue')
-    }
-  ]
+const routes =[
+  {   
+      path: '/',
+      component: () => import('@/views/Home'),
+      children: [
+          {
+              path: "login", // "/login"
+              name: 'login',
+              component: () => import('@/views/Home/components/Login.vue')
+          },
+          {
+              path: '/signup',
+              name: 'signup',
+              component: () => import('@/views/Home/components/SignUp.vue')
+            },
+            {
+              path: '/find/id',
+              name: 'findid',
+              component: () => import('@/views/Home/components/FindId.vue')
+            },
+            {
+              path: '/find/password',
+              name: 'findpassword',
+              component: () => import('@/views/Home/components/FindPassword.vue')
+            },
+      ]
+  },
 
-  export default routes;
+];
+
+export default routes;

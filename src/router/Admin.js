@@ -1,108 +1,153 @@
 const routes = [
-    // MyPage
-    {
+    {   // 마이페이지 > 대시보드
         path: '/admin/dashboard',
-        component: () => import(/* webpackChunkName: "AdminMyPage" */ '@/views/Admin/MyPage/DashBoardView.vue'),
+        name: 'dashboard',
+        component: () => import('@/views/Admin/MyPage/DashBoardView.vue')
     },
     {
+        // 마이페이지 > 회원정보수정
         path: '/admin/mypage/info/modify',
-        component: () => import(/* webpackChunkName: "AdminMyPage" */ '@/views/Admin/MyPage/UpdateAdminView.vue'),
+        name: 'updateadmin',
+        component: () => import('@/views/Admin/MyPage/UpdateAdminView.vue')
     },
-    // Edu / EduCenter
-    {
-        path: '/admin/educenter/list',
-        component: () =>import(/* webpackChunkName: "EduCenter" */ '@/views/Admin/Management/Edu/EduCenter/CenterListView.vue'),
+    {   // 교육관리 > 교육장 
+        path: '/admin/educenter',
+        component: () => import('@/views/Admin/Management/Edu/EduCenter/'),
+        redirect: '/admin/educenter/list',
+        children: [
+            {
+                path: "list", // "/admin/educenter/list"
+                component: () => import('@/views/Admin/Management/Edu/EduCenter/components/CenterList.vue')
+            },
+            {
+                path: "create", // "/admin/educenter/create"
+                component: () => import('@/views/Admin/Management/Edu/EduCenter/components/CreateCenter.vue')
+            },
+            {
+                path: "update", // "/admin/educenter/update"
+                component: () => import('@/views/Admin/Management/Edu/EduCenter/components/UpdateCenter.vue')
+            }
+        ]
     },
-    {
-        path: '/admin/educenter/create',
-        component: () => import(/* webpackChunkName: "EduCenter" */ '@/views/Admin/Management/Edu/EduCenter/CreateCenterView.vue'),
+    {   // 교육관리 > 교육과정
+        path: '/admin/course',
+        component: () => import('@/views/Admin/Management/Edu/Course/'),
+        redirect: '/admin/course/list',
+        children: [
+            {
+                path: "list", // "/admin/course/list"
+                component: () => import('@/views/Admin/Management/Edu/Course/components/CourseList.vue')
+            },
+            {
+                path: "create", // "/admin/course/create"
+                component: () => import('@/views/Admin/Management/Edu/Course/components/CreateCourse.vue')
+            },
+            {
+                path: "update", // "/admin/course/update"
+                component: () => import('@/views/Admin/Management/Edu/Course/components/UpdateCourse.vue')
+            }
+        ]
     },
-    {
-        path: '/admin/educenter/update',
-        component: () => import(/* webpackChunkName: "EduCenter" */ '@/views/Admin/Management/Edu/EduCenter/UpdateCenterView.vue'),
+    {   // 교육관리 > 강의실
+        path: '/admin/room',
+        component: () => import('@/views/Admin/Management/Edu/TrainingRoom/'),
+        redirect: '/admin/room/list',
+        children: [
+            {
+                path: "list", // "/admin/room/list"
+                component: () => import('@/views/Admin/Management/Edu/TrainingRoom/components/RoomList.vue')
+            },
+            {
+                path: "create", // "/admin/room/create"
+                component: () => import('@/views/Admin/Management/Edu/TrainingRoom/components/CreateRoom.vue')
+            },
+            {
+                path: "update", // "/admin/room/update"
+                component: () => import('@/views/Admin/Management/Edu/TrainingRoom/components/UpdateRoom.vue')
+            }
+        ]
     },
-    // Edu / TrainingRoom
-    {
-        path: '/admin/troom/list',
-        component: () => import(/* webpackChunkName: "TrainingRoom" */ '@/views/Admin/Management/Edu/TrainingRoom/RoomListView.vue'),
+    {   // 교육관리 > 교육생
+        path: '/admin/trainee',
+        component: () => import('@/views/Admin/Management/Edu/Trainee/'),
+        redirect: '/admin/trainee/list',
+        children: [
+            {
+                path: "list", // "/admin/trainee/list"
+                component: () => import('@/views/Admin/Management/Edu/Trainee/components/TraineeList.vue')
+            },
+            {
+                path: "register", // "/admin/trainee/register"
+                component: () => import('@/views/Admin/Management/Edu/Trainee/components/CreateTrainee.vue')
+            },
+            {
+                path: "update", // "/admin/trainee/update"
+                component: () => import('@/views/Admin/Management/Edu/Trainee/components/UpdateTrainee.vue')
+            },
+            {
+                path: "detail", // "/admin/trainee/detail"
+                component: () => import('@/views/Admin/Management/Edu/Trainee/components/TraineeDetail.vue')
+            }
+        ]
     },
-    {
-        path: '/admin/troom/create',
-        component: () => import(/* webpackChunkName: "TrainingRoom" */ '@/views/Admin/Management/Edu/TrainingRoom/CreateRoomView.vue'),
+    {   // 학습관리 > 출결관리 
+        path: '/admin/attendance',
+        component: () => import('@/views/Admin/Management/Learning/Attendance/'),
+        redirect: '/admin/attendance/list',
+        children: [
+            {
+                path: "list", // "/admin/attendance/list"
+                component: () => import('@/views/Admin/Management/Learning/Attendance/components/AttendanceList.vue')
+            },
+            {
+                path: "trainee/detail", // "/admin/attendance/trainee/detail"
+                component: () => import('@/views/Admin/Management/Learning/Attendance/components/PersonalAttendanceDetail.vue')
+            }
+        ]
     },
-    {
-        path: '/admin/troom/update',
-        component: () => import(/* webpackChunkName: "TrainingRoom" */ '@/views/Admin/Management/Edu/TrainingRoom/UpdateRoomView.vue'),
+    {   // 학습관리 > 데일리 과제관리 
+        path: '/admin/dailynote',
+        component: () => import('@/views/Admin/Management/Learning/DailyNote/'),
+        redirect: '/admin/dailynote/list',
+        children: [
+            {
+                path: "list", // "/admin/dailynote/list"
+                component: () => import('@/views/Admin/Management/Learning/DailyNote/components/TraineeNoteList.vue')
+            },
+            {
+                path: "trainee/note/list", // "/admin/dailynote/trainee/note/list"
+                component: () => import('@/views/Admin/Management/Learning/DailyNote/components/PersonalNoteList.vue')
+            },
+            {
+                path: "trainee/note/detail", // "/admin/dailynote/trainee/note/detail"
+                component: () => import('@/views/Admin/Management/Learning/DailyNote/components/PersonalNoteDetail.vue')
+            }
+        ]
     },
-    // Edu / Course
-    {
-        path: '/admin/course/list',
-        component: () => import(/* webpackChunkName: "Course" */ '@/views/Admin/Management/Edu/Course/CourseListView.vue'),
-    },
-    {
-        path: '/admin/course/create',
-        component: () => import(/* webpackChunkName: "Course" */ '@/views/Admin/Management/Edu/Course/CreateCourseView.vue'),
-    },
-    {
-        path: '/admin/course/update',
-        component: () => import(/* webpackChunkName: "Course" */ '@/views/Admin/Management/Edu/Course/UpdateCourseView.vue'),
-    },
-    // Edu / Trainee
-    {
-        path: '/admin/trainee/list',
-        component: () => import(/* webpackChunkName: "AdminTrainee" */ '@/views/Admin/Management/Edu/Trainee/TraineeListView.vue'),
-    },
-    {
-        path: '/admin/trainee/create',
-        component: () => import(/* webpackChunkName: "AdminTrainee" */ '@/views/Admin/Management/Edu/Trainee/CreateTraineeView.vue'),
-    },
-    {
-        path: '/admin/trainee/update',
-        component: () => import(/* webpackChunkName: "AdminTrainee" */ '@/views/Admin/Management/Edu/Trainee/UpdateTraineeView.vue'),
-    },
-    {
-        path: '/admin/trainee/detail',
-        component: () => import(/* webpackChunkName: "AdminTrainee" */ '@/views/Admin/Management/Edu/Trainee/TraineeDetailView.vue'),
-    },
-    // Learning / Attendance
-    {
-        path: '/admin/attendance/list',
-        component: () => import(/* webpackChunkName: "AdminAttendance" */ '@/views/Admin/Management/Learning/Attendance/AttendanceListView.vue'),
-    },
-    {
-        path: '/admin/attendance/trainee/detail',
-        component: () => import(/* webpackChunkName: "AdminAttendance" */ '@/views/Admin/Management/Learning/Attendance/PersonalAttendanceDetailView.vue'),
-    },
-    // Learning / DailyNote
-    {
-        path: '/admin/dailynote/list',
-        component: () => import(/* webpackChunkName: "AdminDailyNote" */ '@/views/Admin/Management/Learning/DailyNote/TraineeNoteListView.vue'),
-    },
-    {
-        path: '/admin/dailynote/trainee/note/list',
-        component: () => import(/* webpackChunkName: "AdminDailyNote" */ '@/views/Admin/Management/Learning/DailyNote/PersonalNoteListView.vue'),
-    },
-    {
-        path: '/admin/dailynote/trainee/note/detail',
-        component: () => import(/* webpackChunkName: "AdminDailyNote" */ '@/views/Admin/Management/Learning/DailyNote/PersonalNoteDetailView.vue'),
-    },
-    // Notice
-    {
-        path: '/admin/notice/list',
-        component: () => import(/* webpackChunkName: "AdminNotice" */ '@/views/Admin/Management/Notice/NoticeListView.vue'),
-    },
-    {
-        path: '/admin/notice/create',
-        component: () => import(/* webpackChunkName: "AdminNotice" */ '@/views/Admin/Management/Notice/CreateNoticeView.vue'),
-    },
-    {
-        path: '/admin/notice/update',
-        component: () => import(/* webpackChunkName: "AdminNotice" */ '@/views/Admin/Management/Notice/UpdateNoticeView.vue'),
-    },
-    {
-        path: '/admin/notice/detail',
-        component: () => import(/* webpackChunkName: "AdminNotice" */ '@/views/Admin/Management/Notice/NoticeDetailView.vue'),
+    {   // 학습관리 > 공지사항 관리 
+        path: '/admin/notice',
+        component: () => import('@/views/Admin/Management/Notice/'),
+        redirect: '/admin/notice/list',
+        children: [
+            {
+                path: "list", // "/admin/notice/list"
+                component: () => import('@/views/Admin/Management/Notice/components/NoticeList.vue')
+            },
+            {
+                path: "create", // "/admin/notice/create"
+                component: () => import('@/views/Admin/Management/Notice/components/CreateNotice.vue')
+            },
+            {
+                path: "update", // "/admin/notice/update"
+                component: () => import('@/views/Admin/Management/Notice/components/UpdateNotice.vue')
+            },
+            {
+                path: "detail", // "/admin/notice/detail"
+                component: () => import('@/views/Admin/Management/Notice/components/NoticeDetail.vue')
+            }
+        ]
     }
-  ]
+    
+];
 
-  export default routes;
+export default routes;

@@ -1,60 +1,66 @@
 const routes = [
-    // MyPage
-    {
+    {   // 마이페이지 > 대시보드
         path: '/trainee/dashboard',
-        component: () => import(/* webpackChunkName: "TraineeMyPage" */ '@/views/Trainee/MyPage/DashBoardView.vue'),
+        component: () => import('@/views/Trainee/MyPage/DashBoardView.vue')
     },
     {
+        // 마이페이지 > 회원정보수정
         path: '/trainee/mypage/info/modify',
-        component: () => import(/* webpackChunkName: "TraineeMyPage" */ '@/views/Trainee/MyPage/UpdateTraineeView.vue'),
+        component: () => import('@/views/Trainee/MyPage/UpdateTraineeView.vue')
     },
-    // Attendance
-    {
-        path: '/trainee/attendance/detail',
-        component: () => import(/* webpackChunkName: "TraineeAttendance" */ '@/views/Trainee/Management/Attendance/PersonalAttendanceDetailView.vue'),
-    },
-    {
-        path: '/trainee/attendance/reason/create',
-        component: () => import(/* webpackChunkName: "TraineeAttendance" */ '@/views/Trainee/Management/Attendance/CreateReasonContentsView.vue'),
-    },
-    // DailyNote
-    {
-        path: '/trainee/dailynote/list',
-        component: () => import(/* webpackChunkName: "TraineeDailyNote" */ '@/views/Trainee/Management/DailyNote/PersonalNoteListView.vue'),
-    },
-    {
-        path: '/trainee/dailynote/detail',
-        component: () => import(/* webpackChunkName: "TraineeDailyNote" */ '@/views/Trainee/Management/DailyNote/PersonalNoteDetailView.vue'),
-    },
-
-    // Community
-    {
-        // 커뮤니티 기본 - 공지 리스트
-        path: '/trainee/community',
-        component: () => import(/* webpackChunkName: "TraineeCommunity" */ '@/views/Trainee/Community/CommunityTemplete.vue'),
-        redirect : '/traninee/community/notice/list',
+    {   // 출결관리 > 출결
+        path: '/trainee/attendance',
+        component: () => import('@/views/Trainee/Management/Attendance'),
+        redirect: '/trainee/attendance/detail',
         children: [
             {
-                path: "/reference/list",
-                component: () => import(/* webpackChunkName: "TraineeCommunity" */ '@/views/Trainee/Community/Notice/NoticeListView.vue')
+                path: "detail", // "/trainee/attendance/detail"
+                component: () => import('@/views/Trainee/Management/Attendance/components/PersonalAttendanceDetail.vue')
             },
-            // ReferenceData
             {
-                path: "reference/list",
-                component: () => import(/* webpackChunkName: "TraineeCommunity" */ '@/views/Trainee/Community/ReferenceData')
-            },
-            // AssignMent
-            {
-                path: "assignment/list",
-                component: () => import(/* webpackChunkName: "TraineeCommunity" */ '@/views/Trainee/Community/Assignment')
+                path: "reason/create", // "/trainee/attendance/reason/create"
+                component: () => import('@/views/Trainee/Management/Attendance/components/CreateReasonContents.vue')
             }
         ]
     },
-    // Notice / Detail
-    {
-        path: '/trainee/notice/detail',
-        component: () =>import(/* webpackChunkName: "TraineeCommunity" */ '@/views/Trainee/Community/Notice/NoticeDetailView.vue'),
-    }
-  ]
+    {   // 데일리 과제 관리 > 과제
+        path: '/trainee/dailynote',
+        component: () => import('@/views/Trainee/Management/DailyNote'),
+        redirect: '/trainee/dailynote/list',
+        children: [
+            {
+                path: "list", // "/trainee/dailynote/list"
+                component: () => import('@/views/Trainee/Management/DailyNote/components/PersonalNoteList.vue')
+            },
+            {
+                path: "detail", // "/trainee/dailynote/detail"
+                component: () => import('@/views/Trainee/Management/DailyNote/components/PersonalNoteDetail.vue')
+            }
+        ]
+    },
+    {   // 반 커뮤니티
+        path: '/trainee/community',
+        component: () => import('@/views/Trainee/Community'),
+        redirect: '/trainee/community/notice/list',
+        children: [
+            {
+                path: "notice/list", // "/trainee/community/notice/list"
+                component: () => import('@/views/Trainee/Community/components/NoticeList.vue')
+            },
+            {
+                path: "notice/detail", // "/trainee/community/notice/detail"
+                component: () => import('@/views/Trainee/Community/components/NoticeDetail.vue')
+            },
+            {
+                path: "assignment/list", // "/trainee/community/assignment/list"
+                component: () => import('@/views/Trainee/Community/components/AssignmentList.vue')
+            },
+            {
+                path: "reference/list", // "/trainee/community/reference/list"
+                component: () => import('@/views/Trainee/Community/components/ReferenceDataList.vue')
+            }
+        ]
+    },
+];
 
-  export default routes;
+export default routes;

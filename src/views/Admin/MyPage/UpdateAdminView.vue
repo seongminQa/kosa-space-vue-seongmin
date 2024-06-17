@@ -1,4 +1,20 @@
 <template>
+    <div class="main p-3">
+        <div class="item-section mt-2 mb-2" style="font-size: 12px">
+            마이페이지 > 회원정보수정
+        </div>
+
+        <div>
+            <!-- contents -->
+            <div class="headingArea">
+                <div class="title">
+                    <h1 id="itemTitle">회원정보수정</h1>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
     <div class="p-3 p-md-4 p-xl-5 vh-100">
         <div class="">마이페이지 (운영진 / 강사진 / 교육생 ==> v-if로 조절)</div>
         <br>
