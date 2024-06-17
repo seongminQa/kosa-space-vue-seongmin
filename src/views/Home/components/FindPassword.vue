@@ -69,10 +69,10 @@
                             <RouterLink to="/login" class="link-secondary text-decoration-none">
                                 로그인</RouterLink>
                             <span> | </span>
-                            <RouterLink to="/FindId" class="link-secondary text-decoration-none">아이디
+                            <RouterLink to="/find/id" class="link-secondary text-decoration-none">아이디
                                 찾기</RouterLink>
                             <span> | </span>
-                            <RouterLink to="/SignUp" class="link-secondary text-decoration-none">
+                            <RouterLink to="/signUp" class="link-secondary text-decoration-none">
                                 회원가입</RouterLink>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
 }
 
 #itemTitle {
-	font-weight: 700;
+    font-weight: 700;
     font-size: 1.6rem;
 }
 </style>

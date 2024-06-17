@@ -66,10 +66,10 @@
                         <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center mt-3">
                             <RouterLink to="/login" class="link-secondary text-decoration-none">로그인</RouterLink>
                             <span> | </span>
-                            <RouterLink to="/FindPassword" class="link-secondary text-decoration-none">
+                            <RouterLink to="/find/password" class="link-secondary text-decoration-none">
                                 비밀번호 찾기</RouterLink>
                             <span> | </span>
-                            <RouterLink to="/SignUp" class="link-secondary text-decoration-none">
+                            <RouterLink to="/signUp" class="link-secondary text-decoration-none">
                                 회원가입</RouterLink>
                         </div>
                     </div>

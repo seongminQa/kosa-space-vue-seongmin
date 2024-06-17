@@ -92,7 +92,7 @@
                                 </RouterLink>
                                 <!-- <button class="btn btn-outline-dark btn-lg"
                                                             type="submit"><b>회원가입</b></button> -->
-                                <RouterLink to="/SignUp/complete" class="btn btn-outline-dark btn-lg" type="submit">
+                                <RouterLink to="/signup/complete" class="btn btn-outline-dark btn-lg" type="submit">
                                     <b>회원가입</b>
                                 </RouterLink>
                             </div>
@@ -103,10 +103,10 @@
                 <div class="row mt-3">
                     <div class="col-12">
                         <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center">
-                            <RouterLink to="/FindId" class="link-secondary text-decoration-none">아이디
+                            <RouterLink to="/find/id" class="link-secondary text-decoration-none">아이디
                                 찾기</RouterLink>
                             <span> | </span>
-                            <RouterLink to="/FindPassword" class="link-secondary text-decoration-none">
+                            <RouterLink to="/find/password" class="link-secondary text-decoration-none">
                                 비밀번호 찾기</RouterLink>
                         </div>
                     </div>
