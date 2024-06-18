@@ -31,7 +31,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/admin/dailynote/trainee/note/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/admin/dailynote/trainee/note/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -43,7 +44,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/admin/dailynote/trainee/note/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/admin/dailynote/trainee/note/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -55,7 +57,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">미제출</span></td>
                             <td>
-                                <RouterLink to="/admin/dailynote/trainee/note/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/admin/dailynote/trainee/note/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -92,8 +95,19 @@ function handleDailyNoteBtn() {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 

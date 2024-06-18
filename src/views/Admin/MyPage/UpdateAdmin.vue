@@ -14,7 +14,7 @@
             <!--  -->
             <div class="p-3 p-md-4 p-xl-5 vh-100">
                 <div class="">
-                    <div class="row d-flex mb-3" >
+                    <div class="row d-flex mb-3">
                         <div class="col text-end align-bottom">
                             <p style="font-size: 0.8em"><b style="color:red">*</b>필수입력사항</p>
                         </div>
@@ -151,8 +151,19 @@ function handleCheck() {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
