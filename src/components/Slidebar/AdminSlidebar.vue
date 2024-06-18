@@ -20,7 +20,7 @@
       <div class="menu">
         <p class="title">Main</p>
         <ul>
-          <li>
+          <li class="active">
             <a href="#">
               <i>
                 <PhUser class="icon" />
@@ -32,14 +32,14 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <a href="#">
-                  <span class="text">대시보드</span>
-                </a>
+                <RouterLink to="/admin/dashboard">
+                  대시보드
+                </RouterLink>
               </li>
               <li>
-                <a href="#">
-                  <span class="text">회원정보 수정</span>
-                </a>
+                <RouterLink to="/admin/mypage/info/modify">
+                  회원정보 수정
+                </RouterLink>
               </li>
             </ul>
           </li>
@@ -55,21 +55,28 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <a href="#">
-                  <span class="text">교육장 관리</span>
-                </a>
+                <RouterLink to="/admin/educenter/list">
+                  교육장 관리
+                </RouterLink>
               </li>
               <li>
-                <LouterLink to="/admin/course" style="color: #fff;">교육과정 관리</LouterLink>
+                <RouterLink to="/admin/course/list">
+                  교육과정 관리
+                </RouterLink>
               </li>
               <li>
-                <a href="#">
-                  <span class="text">교육생 관리</span>
-                </a>
+                <RouterLink to="/admin/room/list">
+                  강의실 관리
+                </RouterLink>
+              </li>
+              <li>
+                <RouterLink to="/admin/trainee/list">
+                  교육생 관리
+                </RouterLink>
               </li>
             </ul>
           </li>
-          <li class="active">
+          <li>
             <a href="#">
               <i>
                 <PhGraduationCap class="icon" />
@@ -81,24 +88,24 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <a href="#">
-                  <span class="text">출결 현황 조회</span>
-                </a>
+                <RouterLink to="/admin/attendance/list">
+                  출결 현황 조회
+                </RouterLink>
               </li>
               <li>
-                <a href="#">
-                  <span class="text">과제 현황 조회</span>
-                </a>
+                <RouterLink to="/admin/dailynote/list">
+                  과제 현황 조회
+                </RouterLink>
               </li>
             </ul>
           </li>
           <li>
-            <a href="#">
+            <RouterLink to="/admin/notice/list">
               <i>
                 <PhBrowser class="icon" />
               </i>
-              <span class="text">공지사항 관리</span>
-            </a>
+              공지사항 관리
+            </RouterLink>
           </li>
         </ul>
       </div>
@@ -157,6 +164,12 @@ onMounted(() => {
 </script>
 
 <style scoped>
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
+
+body, h1, h2, h3, h4, h5, h6, input, span, p, textarea, select {
+	font-family: 'Noto Sans KR', sans-serif;
+}
+
 * {
   margin: 0;
   padding: 0;
@@ -183,7 +196,7 @@ min-height: 100vh;
 
 .sidebar {
   position: relative;
-  width: 275px;
+  width: 290px;
   height: 100vh;
   display: flex;
   flex-direction: column;

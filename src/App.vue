@@ -8,8 +8,6 @@
     <router-view class="h-100 w-100" />
   </div> -->
   <div class="wrapper">
-    <!--slidebar-->
-    <AdminSlidebar />
     <RouterView />
   </div>
 
