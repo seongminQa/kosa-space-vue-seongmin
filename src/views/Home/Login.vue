@@ -26,22 +26,23 @@
                     </div>
 
                     <!-- 로그인 폼 -->
-                    <form action="#!">
+                    <form @submit.prevent="handleSubmit">
                         <div class="row gy-3 overflow-hidden">
                             <div class="d-flex justify-content-center col-12">
                                 <div class="form-floating mb-3" style="width: 500px">
-                                    <input type="text" class="form-control" name="mid" id="mid" placeholder="아이디">
+                                    <input type="text" class="form-control" name="mid" id="mid" v-model="mid"
+                                        placeholder="아이디" required>
                                     <label for="mid" class="form-label">ID</label>
                                 </div>
                             </div>
                             <div class="d-flex justify-content-center col-12">
-                                <div class="form-floating mb-1">
-                                    <input type="password" class="form-control" name="mpassword" id="mpassword" value=""
-                                        placeholder="비밀번호" style="width: 500px" required>
+                                <div class="form-floating mb-1" style="width: 500px">
+                                    <input type="password" class="form-control" name="mpassword" id="mpassword"
+                                        v-model="mpassword" placeholder="비밀번호" required>
                                     <label for="password" class="form-label">Password</label>
                                 </div>
                             </div>
-                            <div class="d-flex justify-content-center col-12 mb-5">
+                            <div class="d-flex justify-content-center col-12 mb-3">
                                 <div class="form-check" style="width: 500px">
                                     <input class="form-check-input" type="checkbox" value="" name="remember_me"
                                         id="remember_me">
@@ -51,11 +52,20 @@
                                 </div>
                             </div>
                             <div class="col-12">
+                                <div class="d-grid d-flex justify-content-center" v-if="checkIdPassword">
+                                    <p class="text-center" style="font-size: 1rem">
+                                        <b class="text-danger">아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
+                                            입력하신 내용을 다시 확인해주세요.</b>
+                                    </p>
+                                </div>
+                            </div>
+                            <div class="col-12">
                                 <div class="d-grid d-flex justify-content-center">
                                     <button class="btn btn-outline-dark btn-lg" type="submit"
                                         style="width: 500px"><b>로그인</b></button>
                                 </div>
                             </div>
+
                         </div>
                     </form>
 
@@ -85,6 +95,39 @@
 </template>
 
 <script setup>
+import { computed, ref } from 'vue';
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+
+const store = useStore();
+const router = useRouter();
+
+const mid = ref("");
+const mpassword = ref("");
+
+// const midVal = store.state.mid;
+// const mpasswordVal = store.state.mpassword;
+const midVal = store.getters.getUserId;
+const mpasswordVal = store.getters.getUserPassword;
+
+// 아이디 비밀번호 불일치시 나오는 메시지 DOM 생성 조건
+const checkIdPassword = ref(false);
+
+// 로그인 했을 때
+function handleSubmit() {
+    console.log("mid : ", mid.value);
+    console.log("mpassword : ", mpassword.value);
+    if (mid.value === midVal && mpassword.value === mpasswordVal) {
+        if(mid.value.substring(0,4) === "kosa"){
+            router.push("/admin");
+        } else {
+            router.push("/trainee/dashboard");
+        }
+    } else {
+        checkIdPassword.value = true;
+    }
+}
+
 </script>
 
 <style scoped>

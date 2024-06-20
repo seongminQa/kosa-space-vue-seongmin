@@ -26,48 +26,56 @@
                     </div>
 
                     <!-- 회원가입 폼 -->
-                    <form action="#!">
+                    <form @submit.prevent="handleSubmit">
                         <div class="row gy-3 overflow-hidden">
                             <div class="col-12 mb-1">
+                                <!-- 아이디 입력과 중복체크 버튼 -->
                                 <div class="d-flex justify-content-center">
                                     <div class="form-floating mb-1">
-                                        <input type="text" class="form-control" name="mid" id="mid" placeholder="아이디"
-                                            style="width: 400px;" required>
+                                        <!-- <input type="text" class="form-control" name="mid" id="mid" ref="member.mid" placeholder="아이디"
+                                            style="width: 400px;" required> -->
+                                        <input type="text" class="form-control" name="mid" id="mid" v-model=member.mid
+                                            placeholder="아이디" style="width: 400px;" required>
                                         <label for="mid" class="form-label ms-2">ID</label>
                                     </div>
                                     <div class="d-flex align-items-center ms-3">
-                                        <button class="btn btn-secondary">중복체크</button>
+                                        <button class="btn btn-secondary" @click="handleIdCheck">중복체크</button>
                                     </div>
                                 </div>
                             </div>
+                            <!-- 이름 입력란 -->
                             <div class="d-flex justify-content-center col-12 mb-1">
                                 <div class="form-floating mb-1">
-                                    <input type="text" class="form-control" name="mname" id="mname" placeholder="이름"
-                                        style="width: 510px;" required>
+                                    <input type="text" class="form-control" name="mname" id="mname"
+                                        v-model="member.mname" placeholder="이름" style="width: 510px;" required>
                                     <label for="mname" class="form-label">Name</label>
                                 </div>
                             </div>
+                            <!-- 비밀번호 입력 -->
                             <div class="d-flex justify-content-center col-12">
                                 <div class="form-floating">
-                                    <input type="password" class="form-control" name="mpassword" id="mpassword" value=""
-                                        placeholder="비밀번호" style="width: 510px;" required>
+                                    <input type="password" class="form-control" name="mpassword" id="mpassword1"
+                                        v-model="member.mpassword" value="" placeholder="비밀번호" style="width: 510px;"
+                                        required>
                                     <label for="password" class="form-label">Password</label>
                                     <p style="font-size: 0.7em; height: 4px;">※ 비밀번호는 6~12자리의 영문자와 숫자조합으로만 작성하실 수
                                         있습니다.</p>
                                 </div>
                             </div>
-                            <!-- 비밀번호 확인 -->
+                            <!-- 비밀번호 입력 확인 -->
                             <div class="d-flex justify-content-center col-12">
                                 <div class="form-floating mb-1">
-                                    <input type="password" class="form-control" name="mpassword" id="mpassword" value=""
-                                        placeholder="비밀번호 확인" style="width: 510px;" required>
+                                    <input type="password" class="form-control" name="mpassword" id="mpassword2"
+                                        v-model="mpasswordCheck" value="" placeholder="비밀번호 확인" style="width: 510px;"
+                                        required>
                                     <label for="password" class="form-label">Password Check</label>
                                 </div>
                             </div>
+                            <!-- 이메일 입력 -->
                             <div class="d-flex justify-content-center col-12">
                                 <div class="form-floating mb-1">
                                     <input type="email" class="form-control" name="memail" id="memail" value=""
-                                        placeholder="이메일" style="width: 510px;" required>
+                                        v-model="member.memail" placeholder="이메일" style="width: 510px;" required>
                                     <label for="email" class="form-label">email</label>
                                 </div>
                             </div>
@@ -82,25 +90,25 @@
                                     <span class="ms-2 me-2">-</span>
                                     <!-- 휴대폰 중간 번호 -->
                                     <input type="text" class="form-control text-center" name="mphonenumber2"
-                                        id="mphonenumber2" value="" placeholder="Mid Number"
+                                        v-model="mphonenummiddle" id="mphonenumber2" value="" placeholder="Mid Number"
                                         style="width: 120px; height: 45px" required>
                                     <span class="ms-2 me-2">-</span>
                                     <!-- 휴대폰 뒷 번호 -->
                                     <input type="text" class="form-control text-center" name="mphonenumber3"
-                                        id="mphonenumber3" value="" placeholder="End Number"
+                                        v-model="mphonenumend" id="mphonenumber3" value="" placeholder="End Number"
                                         style="width: 120px; height: 45px" required>
                                 </div>
                             </div>
                             <div class="col-12 mt-4">
                                 <div class="d-grid d-flex justify-content-center">
-                                    <RouterLink to="/" class="btn btn-outline-danger btn-lg me-4" type="submit">
+                                    <RouterLink to="/" class="btn btn-outline-danger btn-lg me-4">
                                         <b>취소</b>
                                     </RouterLink>
                                     <!-- <button class="btn btn-outline-dark btn-lg"
                                                             type="submit"><b>회원가입</b></button> -->
-                                    <RouterLink to="/signup/complete" class="btn btn-outline-dark btn-lg" type="submit">
+                                    <button class="btn btn-outline-dark btn-lg" type="submit">
                                         <b>회원가입</b>
-                                    </RouterLink>
+                                    </button>
                                 </div>
                             </div>
                         </div>
@@ -132,6 +140,87 @@
 </template>
 
 <script setup>
+import { useStore } from 'vuex';
+import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+const store = useStore();
+const router = useRouter();
+
+// 데이터베이스가 있다는 가정하에 작성하는 코드
+const midVal = store.state.mid;
+
+const mpasswordCheck = ref("");
+const mphonenummiddle = ref("");
+const mphonenumend = ref("");
+
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    mrole: "",
+    menable: "",
+    mcreatedat: "",
+    mupdatedat: ""
+});
+
+const idCheck = ref(false);
+
+function handleIdCheck() {
+    console.log(member.value.mid.substring(0, 4));
+    // 현재 mid값을 입력하지 않아도 사용가능하다 뜸.
+    if (member.value.mid === midVal) {
+        alert("중복된 아이디가 있습니다!", member.value.mid);
+        member.value.mid = "";
+    } else if (member.value.mid !== midVal && member.value.mid.length > 3) {
+        alert("사용가능한 아이디입니다!");
+        idCheck.value = true;
+    } else {
+        alert("유효성 검사에 적합하지 않습니다.");
+        member.value.mid = "";
+    }
+}
+
+// 비밀번호 재확인 (비밀번호 input 태그 값 서로 비교)
+const passwordCheck = ref(member.value.mpassword === mpasswordCheck.value);
+// 계정 생성 일시
+const date = new Date();
+let dateFormat = date.getFullYear() + '년' + (date.getMonth() + 1) + '월'
+    + date.getDate() + '일'
+
+function handleSubmit() {
+    if (!idCheck.value) {
+        alert("아이디 중복체크해주세요!");
+    }
+    if (!passwordCheck.value) {
+        alert("비밀번호를 다시 한번 확인해주세요!");
+    }
+    if (idCheck.value && passwordCheck.value && member.value.mid.substring(0, 4) === "kosa") {
+        member.value.mphone = mphonenummiddle.value + mphonenumend.value;
+        member.value.menable = 1;
+        member.value.mrole = "ROLE_ADMIN";
+        member.value.mcreatedat = dateFormat;
+        // router.push("/")
+        console.log(member.value);
+        // console.log(JSON.parse(member.value));  // 오류남. 이유 찾아보자.
+        console.log(JSON.stringify(member.value));
+        console.log(JSON.parse(JSON.stringify(member.value)));
+    }
+    if (idCheck.value && passwordCheck.value && member.value.mid.substring(0, 4) !== "kosa") {
+        member.value.mphone = mphonenummiddle.value + mphonenumend.value;
+        member.value.menable = 1;
+        member.value.mrole = "ROLE_USER";
+        member.value.mcreatedat = dateFormat;
+        // router.push("/");
+        console.log(member.value);
+        // console.log(JSON.parse(member.value));
+        console.log(JSON.stringify(member.value));
+        console.log(JSON.parse(JSON.stringify(member.value)));
+    }
+}
+
 </script>
 
 <style scoped>
