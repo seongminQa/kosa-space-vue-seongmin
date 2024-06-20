@@ -107,8 +107,8 @@ const mpassword = ref("");
 
 // const midVal = store.state.mid;
 // const mpasswordVal = store.state.mpassword;
-const midVal = store.getters.getUserId;
-const mpasswordVal = store.getters.getUserPassword;
+const midVal = store.state.member.mid;
+const mpasswordVal = store.state.member.mpassword;
 
 // 아이디 비밀번호 불일치시 나오는 메시지 DOM 생성 조건
 const checkIdPassword = ref(false);
@@ -121,7 +121,7 @@ function handleSubmit() {
         if(mid.value.substring(0,4) === "kosa"){
             router.push("/admin");
         } else {
-            router.push("/trainee/dashboard");
+            router.push("/trainee");
         }
     } else {
         checkIdPassword.value = true;
