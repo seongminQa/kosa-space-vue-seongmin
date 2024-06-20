@@ -193,8 +193,17 @@
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import { ref } from 'vue';
+
+let academic = ref("고등학교");
 
 const router = useRouter();
+
+function test() {
+    console.log(academic.value);
+    const testa = document.querySelector('#tacademic');
+    academic.value = testa.value;
+}
 
 function handleCancle() {
     router.push(`/trainee/dashboard`);
@@ -208,8 +217,19 @@ function handleCheck() {
 <style scoped>
 @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap');
 
-body, h1, h2, h3, h4, h5, h6, input,
-p, span, small, textarea, select {
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+input,
+p,
+span,
+small,
+textarea,
+select {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
