@@ -118,7 +118,7 @@ function handleSubmit() {
     console.log("mid : ", mid.value);
     console.log("mpassword : ", mpassword.value);
     if (mid.value === midVal && mpassword.value === mpasswordVal) {
-        if(mid.value.substring(0,4) === "kosa"){
+        if (mid.value.substring(0, 4) === "kosa") {
             router.push("/admin");
         } else {
             router.push("/trainee");

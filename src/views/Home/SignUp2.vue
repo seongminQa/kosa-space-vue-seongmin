@@ -25,19 +25,20 @@
                     <!-- 회원가입 폼 -->
                     <form @submit.prevent="handleSubmit">
                         <div class="row gy-3 overflow-hidden">
+                            <!-- 아이디 입력과 중복체크 버튼 -->
                             <div class="col-12 mb-2">
-                                <!-- 아이디 입력과 중복체크 버튼 -->
                                 <div class="d-flex justify-content-center">
                                     <div class="form-floating">
-                                        <input type="text" class="form-control" name="mid" id="mid" v-model="member.mid"
-                                            placeholder="아이디" style="width: 400px;" @input="idPatternCheck" required>
+                                        <input type="text" class="form-control" name="mid" id="mid"
+                                            v-model.trim="member.mid" placeholder="아이디" style="width: 400px;"
+                                            @input="idPatternCheck()" required>
                                         <label for="mid" class="form-label ms-2">ID</label>
                                     </div>
                                     <div class="d-flex align-items-center ms-3">
-                                        <button class="btn btn-secondary" @click="handleIdCheck">중복체크</button>
+                                        <button class="btn btn-secondary" @click="handleIdCheck()">중복체크</button>
                                     </div>
                                 </div>
-                                <span v-if="!midResult" class="d-flex justify-content-center text-danger"
+                                <span v-if="midCheck" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     영어 소문자와 숫자로 입력해주세요. (길이 5 ~ 12 공백 X)
                                 </span>
@@ -47,14 +48,14 @@
                                 <div class="d-flex justify-content-center">
                                     <div class="form-floating">
                                         <input type="text" class="form-control" name="mname" id="mname"
-                                            v-model="member.mname" placeholder="이름" style="width: 510px;"
-                                            @input="namePatternCheck" required>
+                                            v-model.trim="member.mname" placeholder="이름" style="width: 510px;"
+                                            @input="namePatternCheck()" required>
                                         <label for="mname" class="form-label">Name</label>
                                     </div>
                                 </div>
-                                <span v-if="!mnameResult" class="d-flex justify-content-center text-danger"
+                                <span v-if="mnameCheck" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
-                                    이름은 한글만 입력 가능합니다. (길이 2 ~ 5 공백 X)
+                                    2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 5 공백 X)
                                 </span>
                             </div>
                             <!-- 비밀번호 입력 -->
@@ -62,14 +63,14 @@
                                 <div class="d-flex justify-content-center col-12">
                                     <div class="form-floating">
                                         <input type="password" class="form-control" name="mpassword" id="mpassword1"
-                                            v-model="member.mpassword" value="" placeholder="비밀번호" style="width: 510px;"
-                                            @input="passwordPatternCheck" required>
+                                            v-model.trim="member.mpassword" value="" placeholder="비밀번호"
+                                            style="width: 510px;" @input="passwordPatternCheck()" required>
                                         <label for="password" class="form-label">Password</label>
                                         <!-- <p style="font-size: 0.7em; height: 4px;">※ 비밀번호는 6~12자리의 영문자와 숫자조합으로만 작성하실 수
                                             있습니다.</p> -->
                                     </div>
                                 </div>
-                                <span v-if="!mpasswordResult" class="d-flex justify-content-center text-danger"
+                                <span v-if="mpasswordCheck" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     영어 대/소문자, 숫자, 특수문자를 포함하여야 합니다. (길이 5 ~ 12 공백 X)
                                 </span>
@@ -79,12 +80,12 @@
                                 <div class="d-flex justify-content-center">
                                     <div class="form-floating">
                                         <input type="password" class="form-control" name="mpassword" id="mpassword2"
-                                            v-model="mpasswordCheck" value="" placeholder="비밀번호 확인"
-                                            style="width: 510px;" @input="pwCheck" required>
+                                            v-model.trim="mpasswordDoubleCheck" value="" placeholder="비밀번호 확인"
+                                            style="width: 510px;" @input="passwordDoubleCheck()" required>
                                         <label for="password" class="form-label">Password Check</label>
                                     </div>
                                 </div>
-                                <span v-if="!mpasswordCheckResult" class="d-flex justify-content-center text-danger"
+                                <span v-if="mpasswordCheck2" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     비밀번호를 다시 한번 확인해주세요.
                                 </span>
@@ -95,14 +96,14 @@
                                 <div class="d-flex justify-content-center">
                                     <div class="form-floating">
                                         <input type="email" class="form-control" name="memail" id="memail" value=""
-                                            v-model="member.memail" placeholder="이메일" style="width: 510px;"
-                                            @input="emailPatternCheck" required>
+                                            v-model.trim="member.memail" placeholder="이메일" style="width: 510px;"
+                                            @input="emailPatternCheck()" required>
                                         <label for="email" class="form-label">email</label>
                                     </div>
                                 </div>
-                                <span v-if="!memailResult" class="d-flex justify-content-center text-danger"
+                                <span v-if="memailCheck" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
-                                    ex abcd@gmail.com 의 형식으로 기입해주십시오.
+                                    ex: abcd@gmail.com 의 형식으로 기입해주십시오.
                                 </span>
                             </div>
 
@@ -117,16 +118,16 @@
                                         <span class="ms-2 me-2">-</span>
                                         <!-- 휴대폰 중간 번호 -->
                                         <input type="text" class="form-control text-center" name="mphonenumber2"
-                                            v-model="mphonenummiddle" id="mphonenumber2" value=""
+                                            v-model.trim="mphonenummiddle" id="mphonenumber2" value=""
                                             placeholder="Mid Number" style="width: 120px; height: 45px" required>
                                         <span class="ms-2 me-2">-</span>
                                         <!-- 휴대폰 뒷 번호 -->
                                         <input type="text" class="form-control text-center" name="mphonenumber3"
-                                            v-model="mphonenumend" id="mphonenumber3" value="" placeholder="End Number"
-                                             style="width: 120px; height: 45px" required>
+                                            v-model.trim="mphonenumend" id="mphonenumber3" value=""
+                                            placeholder="End Number" style="width: 120px; height: 45px" required>
                                     </div>
                                 </div>
-                                <span v-if="!phonePatternCheck()" class="d-flex justify-content-center text-danger"
+                                <span v-if="mphoneCheck" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     휴대폰 번호는 필수로 입력하셔야 합니다.
                                 </span>
@@ -138,7 +139,7 @@
                                     </RouterLink>
                                     <!-- <button class="btn btn-outline-dark btn-lg"
                                                             type="submit"><b>회원가입</b></button> -->
-                                    <button class="btn btn-outline-dark btn-lg disabled" type="submit">
+                                    <button class="btn btn-outline-dark btn-lg" :class="btnShow" type="submit">
                                         <b>회원가입</b>
                                     </button>
                                 </div>
@@ -163,7 +164,7 @@
             <div class="shadow col-12 col-md-6" style="height: 800px; border: 2px solid red">
                 <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
                     src="https://cdn.dribbble.com/users/3578290/screenshots/16190754/media/24bf4cc8a0b3bfddd2bcdfb2c4d12e73.jpg?resize=1000x750&vertical=center"
-                     height="100%">
+                    height="100%">
             </div>
         </div>
     </div>
@@ -188,6 +189,7 @@ const member = ref({
     mcreatedat: "",
     mupdatedat: ""
 });
+const mpasswordDoubleCheck = ref("");
 
 /*
     스크립트 유효성 검사 
@@ -205,74 +207,94 @@ const member = ref({
     8. 이름 한글로만 받기
 */
 
-// 유효성 검사 중 공백 제거
+// v-if를 위한 상태 변수
+let midCheck = ref(null);
+let mnameCheck = ref(null);
+let mpasswordCheck = ref(null);
+let mpasswordCheck2 = ref(null);
+let memailCheck = ref(null);
+let mphonenummiddle = ref("");
+let mphonenumend = ref("");
+let mphoneCheck = ref(null);
 
-// 유효성 검사의 v-if 활성화를 위한 변수 선언과 초기화
-let midResult = ref(true);
-let mnameResult = ref(true);
-let mpasswordResult = ref(true);
-let mpasswordCheck = ref("");  // 비밀번호 재확인
-let mpasswordCheckResult = ref(true);  // 비밀번호 input 태그 값 서로 비교 변수
-let memailResult = ref(true);
-let mphoneResult = ref(true);
-
+// ####유효성 검사####
 // 아이디 유효성 검사
 function idPatternCheck() {
     const midPattern = /^[a-z0-9]{4,12}$/;
-    midResult.value = midPattern.test(member.value.mid);
-    console.log(midResult.value);
-    checkVal();
+    // console.log(midPattern.test(member.value.mid));
+    if (midPattern.test(member.value.mid)) {
+        midCheck.value = false;
+    } else {
+        midCheck.value = true;
+    }
 }
-
 // 이름 유효성 검사
 function namePatternCheck() {
     const mnamePattern = /^[가-힣]{2,6}$/;
-    mnameResult.value = mnamePattern.test(member.value.mname);
-    console.log(mnameResult.value);
-    checkVal();
+    // console.log(mnamePattern.test(member.value.mname));
+    if (mnamePattern.test(member.value.mname)) {
+        mnameCheck.value = false;
+    } else {
+        mnameCheck.value = true;
+    }
 }
-
 // 비밀번호 유효성 검사
 function passwordPatternCheck() {
     const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
-    mpasswordResult.value = mpasswordPattern.test(member.value.mpassword);
-    console.log(mpasswordResult.value);
-    checkVal();
-}
-
-// 비밀번호 재확인
-function pwCheck() {
-    // 비밀번호 input 태그 값 서로 비교
-    if (member.value.mpassword === mpasswordCheck.value) {
-        mpasswordCheckResult.value = true;
+    // console.log(mpasswordPattern.test(member.value.mpassword));
+    if (mpasswordPattern.test(member.value.mpassword)) {
+        mpasswordCheck.value = false;
     } else {
-        mpasswordCheckResult.value = false;
+        mpasswordCheck.value = true;
+    }
+}
+// 비밀번호 2차 확인
+function passwordDoubleCheck() {
+    if (member.value.mpassword === mpasswordDoubleCheck.value) {
+        mpasswordCheck2.value = false;
+    } else {
+        mpasswordCheck2.value = true;
+    }
+}
+// 이메일 유효성 검사
+function emailPatternCheck() {
+    const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+    // console.log(memailPattern.test(member.value.memail));
+    if (memailPattern.test(member.value.memail)) {
+        memailCheck.value = false;
+    } else {
+        memailCheck.value = true;
     }
 }
 
-// 이메일 유효성 검사
-function emailPatternCheck() {
-    // /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-    const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    memailResult.value = memailPattern.test(member.value.memail);
-    console.log(memailResult.value);
-}
+let totalCheck = ref(false);
+const mphonePattern = /^(010)-\d{4}-\d{4}$/;
+member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
+let mphoneNumber = ref("");
+mphoneNumber.value = mphonePattern.test(member.value.mphone);
 
-// 휴대폰 중간번호와 끝번호
-const mphonenummiddle = ref("");
-const mphonenumend = ref("");
+let btnShow = ref("");
 
-// 휴대폰 번호 유효성 검사
-function phonePatternCheck() {
-    const mphonePattern = /^(010)-\d{4}-\d{4}$/;
-    // 휴대폰 번호 정의
-    member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
-    mphoneResult.value = mphonePattern.test(member.value.mphone);
-    console.log(mphoneResult.value);
-    if(mphoneResult.value){
-        return true;
+// 전체 입력값 확인하기
+function onState() {
+    console.group("각 input태그의 값을 확인하기");
+    console.log("midCheck : " + midCheck.value);
+    console.log("mnameCheck : " + mnameCheck.value);
+    console.log("mpasswordCheck : " + mpasswordCheck.value);
+    console.log("mpasswordCheck2 : " + mpasswordCheck2.value);
+    console.log("memailCheck : " + memailCheck.value);
+    console.log("mphoneNumber : " + mphoneNumber.value);
+    console.end("확인");
+    if (!midCheck.value && !mnameCheck.value && !mpasswordCheck.value
+        && !mpasswordCheck2.value && !memailCheck.value
+        && mphoneNumber.value) {
+        totalCheck.value = true;
+        console.log("totalCheck : " + totalCheck.value);
+        btnShow.value = ""
     } else {
-        return false;
+        totalCheck.value = false;
+        console.log("totalCheck : " + totalCheck.value);
+        btnShow.value = "disabled"
     }
 }
 
@@ -284,7 +306,7 @@ const idCheck = ref(false);
 
 // 아이디 중복검사 버튼 이벤트
 function handleIdCheck() {
-    console.log(member.value.mid.substring(0, 4));
+    // console.log(member.value.mid.substring(0, 4));
     // 현재 mid값을 입력하지 않아도 사용가능하다 뜸.
     if (member.value.mid === midVal) {
         alert("중복된 아이디가 있습니다!", member.value.mid);
@@ -304,48 +326,9 @@ function handleIdCheck() {
 const date = new Date();
 let dateFormat = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
 
-// 회원가입 버튼 활성화를 위한 변수
-let confirm = ref(false);
-
-function checkVal() {
-    if(midResult && mnameResult && mpasswordResult && mpasswordCheckResult && memailResult && mphoneResult && idCheck) {
-        confirm = true;
-    } else {
-        confirm = false;
-    }
-}
-
-
 // 회원가입 버튼 이벤트
 function handleSubmit() {
-    if (!idCheck.value) {
-        alert("아이디 중복체크해주세요!");
-    }
-    if (!mpasswordCheckResult.value) {
-        alert("비밀번호를 다시 한번 확인해주세요!");
-    }
-    if (idCheck.value && mpasswordCheckResult.value && member.value.mid.substring(0, 4) === "kosa") {
-        member.value.mphone = mphonenummiddle.value + mphonenumend.value;
-        member.value.menable = 1;
-        member.value.mrole = "ROLE_ADMIN";
-        member.value.mcreatedat = dateFormat;
-        // router.push("/")
-        console.log(member.value);
-        // console.log(JSON.parse(member.value));  // 오류남. 이유 찾아보자.
-        console.log(JSON.stringify(member.value));
-        console.log(JSON.parse(JSON.stringify(member.value)));
-    }
-    if (idCheck.value && mpasswordCheckResult.value && member.value.mid.substring(0, 4) !== "kosa") {
-        member.value.mphone = mphonenummiddle.value + mphonenumend.value;
-        member.value.menable = 1;
-        member.value.mrole = "ROLE_USER";
-        member.value.mcreatedat = dateFormat;
-        // router.push("/");
-        console.log(member.value);
-        // console.log(JSON.parse(member.value));
-        console.log(JSON.stringify(member.value));
-        console.log(JSON.parse(JSON.stringify(member.value)));
-    }
+
 }
 
 </script>

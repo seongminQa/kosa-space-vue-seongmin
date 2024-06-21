@@ -2,7 +2,7 @@ export default {
     namespaced: true,
 
     state: {
-        mid: "user",
+        mid: "M2001",
         mpassword: "12345",
         mname: "",
         mphone: "",
@@ -13,10 +13,10 @@ export default {
         mupdatedat: ""
     },
     getters: {
-        getUserId(state, getters, rootState, rootGetters) {
+        getMid(state, getters, rootState, rootGetters) {
             return state.mid;
         },
-        getUserPassword(state, getters, rootState, rooteGetters) {
+        getMpassword(state, getters, rootState, rooteGetters) {
             return state.mpassword;
         },
         getUserInfo(state, getters, rootState, rooteGetters) {
