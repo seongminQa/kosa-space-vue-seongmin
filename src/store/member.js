@@ -4,8 +4,8 @@ export default {
     state: {
         mid: "M2001",
         mpassword: "12345",
-        mname: "",
-        mphone: "",
+        mname: "김성민",
+        mphone: "010-1234-1234",
         memail: "znznfltm@gmail.com",
         mrole: "",
         menable: "",

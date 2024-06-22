@@ -38,7 +38,7 @@
                                         <button class="btn btn-secondary" @click="handleIdCheck()">중복체크</button>
                                     </div>
                                 </div>
-                                <span v-if="midCheck" class="d-flex justify-content-center text-danger"
+                                <span v-if="midCheck === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     영어 소문자와 숫자로 입력해주세요. (길이 5 ~ 12 공백 X)
                                 </span>
@@ -53,7 +53,7 @@
                                         <label for="mname" class="form-label">Name</label>
                                     </div>
                                 </div>
-                                <span v-if="mnameCheck" class="d-flex justify-content-center text-danger"
+                                <span v-if="mnameCheck === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 5 공백 X)
                                 </span>
@@ -70,7 +70,7 @@
                                             있습니다.</p> -->
                                     </div>
                                 </div>
-                                <span v-if="mpasswordCheck" class="d-flex justify-content-center text-danger"
+                                <span v-if="mpasswordCheck === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     영어 대/소문자, 숫자, 특수문자를 포함하여야 합니다. (길이 5 ~ 12 공백 X)
                                 </span>
@@ -85,7 +85,7 @@
                                         <label for="password" class="form-label">Password Check</label>
                                     </div>
                                 </div>
-                                <span v-if="mpasswordCheck2" class="d-flex justify-content-center text-danger"
+                                <span v-if="mpasswordCheck2 === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     비밀번호를 다시 한번 확인해주세요.
                                 </span>
@@ -101,7 +101,7 @@
                                         <label for="email" class="form-label">email</label>
                                     </div>
                                 </div>
-                                <span v-if="memailCheck" class="d-flex justify-content-center text-danger"
+                                <span v-if="memailCheck === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     ex: abcd@gmail.com 의 형식으로 기입해주십시오.
                                 </span>
@@ -124,12 +124,13 @@
                                         <!-- 휴대폰 뒷 번호 -->
                                         <input type="text" class="form-control text-center" name="mphonenumber3"
                                             v-model.trim="mphonenumend" id="mphonenumber3" value=""
-                                            placeholder="End Number" style="width: 120px; height: 45px" required>
+                                            placeholder="End Number" style="width: 120px; height: 45px"
+                                            @input="phonePatternCheck()" required>
                                     </div>
                                 </div>
-                                <span v-if="mphoneCheck" class="d-flex justify-content-center text-danger"
+                                <span v-if="mphoneCheck === false" class="d-flex justify-content-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
-                                    휴대폰 번호는 필수로 입력하셔야 합니다.
+                                    휴대폰 번호 중간번호 4자리, 끝번호 4자리를 입력해주세요.
                                 </span>
                             </div>
                             <div class="col-12 mt-4">
@@ -219,63 +220,98 @@ let mphoneCheck = ref(null);
 
 // ####유효성 검사####
 // 아이디 유효성 검사
+const midPattern = /^[a-zA-Z0-9]{4,12}$/;
 function idPatternCheck() {
-    const midPattern = /^[a-z0-9]{4,12}$/;
-    // console.log(midPattern.test(member.value.mid));
     if (midPattern.test(member.value.mid)) {
-        midCheck.value = false;
-    } else {
         midCheck.value = true;
+    } else {
+        midCheck.value = false;
     }
+    onState();
 }
 // 이름 유효성 검사
+const mnamePattern = /^[가-힣]{2,6}$/;
 function namePatternCheck() {
-    const mnamePattern = /^[가-힣]{2,6}$/;
-    // console.log(mnamePattern.test(member.value.mname));
     if (mnamePattern.test(member.value.mname)) {
-        mnameCheck.value = false;
-    } else {
         mnameCheck.value = true;
+    } else {
+        mnameCheck.value = false;
     }
+    onState();
 }
 // 비밀번호 유효성 검사
+const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
 function passwordPatternCheck() {
-    const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
-    // console.log(mpasswordPattern.test(member.value.mpassword));
     if (mpasswordPattern.test(member.value.mpassword)) {
-        mpasswordCheck.value = false;
-    } else {
         mpasswordCheck.value = true;
+    } else {
+        mpasswordCheck.value = false;
     }
+    onState();
 }
 // 비밀번호 2차 확인
 function passwordDoubleCheck() {
     if (member.value.mpassword === mpasswordDoubleCheck.value) {
-        mpasswordCheck2.value = false;
-    } else {
         mpasswordCheck2.value = true;
+    } else {
+        mpasswordCheck2.value = false;
     }
+    onState();
 }
 // 이메일 유효성 검사
+const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 function emailPatternCheck() {
-    const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
-    // console.log(memailPattern.test(member.value.memail));
     if (memailPattern.test(member.value.memail)) {
-        memailCheck.value = false;
-    } else {
         memailCheck.value = true;
+    } else {
+        memailCheck.value = false;
     }
+    onState();
+}
+// 휴대폰 번호 유효성 검사
+const mphonePattern = /^(010)-\d{4}-\d{4}$/;
+// mphoneCheck.value = mphonePattern.test(member.value.mphone);
+function phonePatternCheck() {
+    member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
+    if (mphonePattern.test(member.value.mphone)) {
+        mphoneCheck.value = true;
+    } else {
+        mphoneCheck.value = false;
+    }
+    onState();
 }
 
-let totalCheck = ref(false);
-const mphonePattern = /^(010)-\d{4}-\d{4}$/;
-member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
-let mphoneNumber = ref("");
-mphoneNumber.value = mphonePattern.test(member.value.mphone);
 
-let btnShow = ref("");
+// 아이디 중복 체크 (데이터베이스가 있다는 가정하에 작성하는 코드)
+const midVal = store.state.member.mid;  // 현재 M2001 로 고정
+let idCheckBtn = ref(false);
+// 아이디 중복검사 버튼 이벤트
+function handleIdCheck() {
+    // console.log(member.value.mid.substring(0, 4));
+    // 현재 mid값을 입력하지 않아도 사용가능하다 뜸.
+    if (midPattern.test(member.value.mid) && member.value.mid.length >= 4) {
+        if (member.value.mid === midVal) {
+            alert("중복된 아이디가 있습니다!", member.value.mid);
+            member.value.mid = "";
+        } else if (member.value.mid !== midVal) {
+            alert("사용가능한 아이디입니다!");
+            idCheckBtn = true;
+        }
+    }
+    else {
+        alert("유효성 검사에 적합하지 않습니다.");
+        member.value.mid = "";
+    }
+    onState();
+}
+
+// 계정 생성 일시와 일자까지만 포맷
+const date = new Date();
+let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
 
 // 전체 입력값 확인하기
+// let totalCheck = ref(false);
+let btnShow = ref("disabled");
 function onState() {
     console.group("각 input태그의 값을 확인하기");
     console.log("midCheck : " + midCheck.value);
@@ -283,52 +319,21 @@ function onState() {
     console.log("mpasswordCheck : " + mpasswordCheck.value);
     console.log("mpasswordCheck2 : " + mpasswordCheck2.value);
     console.log("memailCheck : " + memailCheck.value);
-    console.log("mphoneNumber : " + mphoneNumber.value);
-    console.end("확인");
-    if (!midCheck.value && !mnameCheck.value && !mpasswordCheck.value
-        && !mpasswordCheck2.value && !memailCheck.value
-        && mphoneNumber.value) {
-        totalCheck.value = true;
-        console.log("totalCheck : " + totalCheck.value);
+    console.log("mphoneCheck : " + mphoneCheck.value);
+    console.groupEnd();
+    // 전체 유효성 검사를 통과하면 회원가입 버튼 활성화
+    if (midCheck.value && mnameCheck.value && mpasswordCheck.value
+        && mpasswordCheck2.value && memailCheck.value
+        && mphoneCheck.value && idCheckBtn) {
         btnShow.value = ""
     } else {
-        totalCheck.value = false;
-        console.log("totalCheck : " + totalCheck.value);
         btnShow.value = "disabled"
     }
 }
 
-// 아이디 중복 체크 (데이터베이스가 있다는 가정하에 작성하는 코드)
-const midVal = store.state.mid;  // 현재 M2001 로 고정
-
-// 아이디 중복검사를 위한 변수
-const idCheck = ref(false);
-
-// 아이디 중복검사 버튼 이벤트
-function handleIdCheck() {
-    // console.log(member.value.mid.substring(0, 4));
-    // 현재 mid값을 입력하지 않아도 사용가능하다 뜸.
-    if (member.value.mid === midVal) {
-        alert("중복된 아이디가 있습니다!", member.value.mid);
-        member.value.mid = "";
-        idCheck.value = false;
-    } else if (member.value.mid !== midVal && member.value.mid.length > 3) {
-        alert("사용가능한 아이디입니다!");
-        idCheck.value = true;
-    } else {
-        alert("유효성 검사에 적합하지 않습니다.");
-        member.value.mid = "";
-        idCheck.value = false;
-    }
-}
-
-// 계정 생성 일시와 일자까지만 포맷
-const date = new Date();
-let dateFormat = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
-
 // 회원가입 버튼 이벤트
 function handleSubmit() {
-
+    router.push("/signup/complete");
 }
 
 </script>

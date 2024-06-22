@@ -1,9 +1,6 @@
 <template>
     <!-- contents -->
     <div class="headingArea">
-        <div class="title">
-            <h1 id="itemTitle">아이디 찾기</h1>
-        </div>
         <!--  -->
         <div class="row d-flex justify-content-center align-items-center p-3 p-md-4 p-xl-5 vh-100">
             <div class="shadow col-12 col-md-6" style="height: 800px;">
@@ -26,42 +23,67 @@
                     </div>
 
                     <!-- 아이디 찾기 폼 -->
-                    <form class="" action="#!">
+                    <form @submit.prevent="handleSubmit">
                         <div class="row gy-3 overflow-hidden">
-                            <div class="d-flex justify-content-center col-12">
-                                <div class="form-floating mb-3" style="width: 500px">
-                                    <input type="text" class="form-control" name="mid" id="mid" placeholder="아이디">
-                                    <label for="mid" class="form-label">ID</label>
+                            <!-- 휴대폰 번호 입력 -->
+                            <div class="col-12 mb-3">
+                                <div class="d-flex justify-content-center">
+                                    <div class="d-flex align-items-center mb-1">
+                                        <span class="">Phone Number : </span>
+                                        <!-- 휴대폰 앞 번호 -->
+                                        <input type="text" class="form-control text-center ms-3" name="mphonenumber1"
+                                            id="mphonenumber1" value="010" style="width: 80px; height: 45px" readonly>
+                                        <span class="ms-2 me-2">-</span>
+                                        <!-- 휴대폰 중간 번호 -->
+                                        <input type="text" class="form-control text-center" name="mphonenumber2"
+                                            v-model.trim="mphonenummiddle" id="mphonenumber2" value=""
+                                            placeholder="Mid Number" style="width: 120px; height: 45px" required>
+                                        <span class="ms-2 me-2">-</span>
+                                        <!-- 휴대폰 뒷 번호 -->
+                                        <input type="text" class="form-control text-center" name="mphonenumber3"
+                                            v-model.trim="mphonenumend" id="mphonenumber3" value=""
+                                            placeholder="End Number" style="width: 120px; height: 45px"
+                                            @input="phonePatternCheck()" required>
+                                    </div>
                                 </div>
+                                <span v-if="mphoneCheck === false" class="d-flex justify-content-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    휴대폰 번호 중간번호 4자리, 끝번호 4자리를 입력해주세요.
+                                </span>
                             </div>
 
-                            <div class="d-flex justify-content-center col-12 mb-2">
-                                <div class="form-floating mb-1" style="width: 500px">
-                                    <input type="email" class="form-control" name="memail" id="memail" value=""
-                                        placeholder="이메일" required>
-                                    <label for="email" class="form-label">email</label>
+                            <!-- 이메일 입력 폼 -->
+                            <div class="col-12 mb-4">
+                                <div class="d-flex justify-content-center">
+                                    <div class="form-floating">
+                                        <input type="email" class="form-control" name="memail" id="memail" value=""
+                                            v-model.trim="member.memail" placeholder="이메일" style="width: 510px;"
+                                            @input="emailPatternCheck()" required>
+                                        <label for="email" class="form-label">email</label>
+                                    </div>
                                 </div>
-                            </div>
-
-                            <!-- 유효성 검사를 넣을지 생각 -->
-                            <!-- 아이디와 email 일치 여부에 따라 동적으로 구성 -->
-                            <div class="text-center col-12 mb-5">
-                                <p>아이디가 존재하지 않습니다! 다시 입력해주세요.</p> <br>
-                                <p>이메일이 일치하지 않습니다! 다시 입력해주세요.</p>
+                                <span v-if="memailCheck === false" class="d-flex justify-content-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    ex: abcd@gmail.com 의 형식으로 기입해주십시오.
+                                </span>
                             </div>
 
                             <!-- 아이디와 이메일이 일치하는지 보여주는 div 만들기? -->
                             <div class="d-flex justify-content-center col-12">
                                 <div class="d-grid">
-                                    <button class="btn btn-outline-dark btn-lg" type="submit"
+                                    <button class="btn btn-outline-dark btn-lg" type="submit" @click="handleFindId()"
                                         style="width: 500px"><b>아이디
                                             찾기</b></button>
                                 </div>
                             </div>
-                            <!-- 아이디와 이메일이 서로 일치한다면 보여주는 div 만들기 -->
                             <div class="col-12">
-                                <p class="text-center">
-                                    회원님의 아이디는 <b style="color:red">'아이디'</b>으로 등록되어 있습니다.
+                                <!-- 아이디와 이메일이 서로 일치한다면 -->
+                                <p v-if="introduceId" class="text-center">
+                                    회원님의 아이디는 <b style="color:red">'{{ idMessage }}'</b>으로 등록되어 있습니다.
+                                </p>
+                                <!-- 아이디와 이메일이 서로 일치하지 않는다면 -->
+                                <p v-if="checkIdEmail" class="text-center text-danger">
+                                    전화번호와 이메일에 일치하는 아이디가 없습니다.
                                 </p>
                             </div>
                         </div>
@@ -94,6 +116,72 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+import { useStore } from 'vuex';
+
+const store = useStore();
+
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    mrole: "",
+    menable: "",
+    mcreatedat: "",
+    mupdatedat: ""
+});
+
+let mphonenummiddle = ref("");
+let mphonenumend = ref("");
+let mphoneCheck = ref(null);
+let memailCheck = ref(null);
+let introduceId = ref(null);
+
+// 휴대폰 번호 유효성 검사
+const mphonePattern = /^(010)-\d{4}-\d{4}$/;
+function phonePatternCheck() {
+    member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
+    console.log(member.value.mphone);
+    if (mphonePattern.test(member.value.mphone)) {
+        mphoneCheck.value = true;
+    } else {
+        mphoneCheck.value = false;
+    }
+}
+
+// 이메일 유효성 검사
+const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+function emailPatternCheck() {
+    if (memailPattern.test(member.value.memail)) {
+        memailCheck.value = true;
+    } else {
+        memailCheck.value = false;
+    }
+}
+
+let checkIdEmail = ref(null);
+let idMessage = ref("");
+
+// 아이디 찾기 버튼
+function handleFindId() {
+    if (member.value.mphone.length === 0) {
+        alert("휴대폰 번호를 입력해주세요.");
+    } else if (member.value.memail.length === 0) {
+        alert("이메일을 입력해주세요.");
+    } else {
+        if ((member.value.mphone === store.state.member.mphone) && (member.value.memail === store.state.member.memail)) {
+            introduceId.value = true;
+            checkIdEmail.value = false;
+            idMessage.value = store.state.member.mid;
+        } else {
+            introduceId.value = false;
+            checkIdEmail.value = true;
+        }
+    }
+}
+
 </script>
 
 <style scoped>

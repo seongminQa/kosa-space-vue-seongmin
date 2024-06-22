@@ -22,74 +22,114 @@
                     <!-- 회원정보수정 테이블 -->
                     <table class="table">
                         <tbody class="align-middle">
+                            <!-- 아이디 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center" style="width: 300px; ">아이디</th>
                                 <td class="p-3">
-                                    <input type="text" class="form-control p-3" name="mid" id="mid" value="kosa12345"
-                                        style="width: 300px;" readonly />
+                                    <input type="text" class="form-control p-3" name="mid" id="mid"
+                                        v-model.trim="store.state.member.mid" style="width: 300px;" readonly />
                                 </td>
                             </tr>
+                            <!-- 이름 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">이름
                                 </th>
                                 <td class="p-3">
-                                    <input type="text" class="form-control p-3" name="mid" id="mid" value="김성민"
-                                        style="width: 300px;" readonly />
+                                    <input type="text" class="form-control p-3" name="mname" id="mname"
+                                        v-model.trim="store.state.member.mname" style="width: 300px;" readonly />
                                 </td>
                             </tr>
+                            <!-- 비밀번호 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">비밀번호
                                 </th>
                                 <td class="p-3">
-                                    <div class="form-floating mb-1">
-                                        <input type="password" class="form-control" name="mpassword" id="mpassword"
-                                            value="" placeholder="비밀번호" style="width: 300px;">
-                                        <label for="password" class="form-label">Password</label>
+                                    <div v-if="pwChangeCheck">
+                                        <button class="btn btn-dark" @click="pwChange()">비밀번호 변경</button>
                                     </div>
-                                    <p style="font-size: 0.7em">※ 비밀번호는 6~12자리의 영문자와 숫자조합으로만 작성하실 수 있습니다.</p>
+                                    <div v-if="!pwChangeCheck">
+                                        <div class="form-floating d-flex mb-1">
+                                            <input type="password" class="form-control" name="mpassword1"
+                                                id="mpassword1" v-model.trim="mpassword" @input="passwordPatternCheck()"
+                                                placeholder="비밀번호" style="width: 300px;">
+                                            <label for="password" class="form-label">Password</label>
+                                        </div>
+                                        <span v-if="mpasswordCheck === false"
+                                            class="d-flex justify-content-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            ※ 영어 대/소문자, 숫자, 특수문자를 포함하여야 합니다. (길이 5 ~ 12 공백 X)
+                                        </span>
+                                    </div>
                                 </td>
                             </tr>
-                            <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
+                            <tr v-if="!pwChangeCheck" style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">비밀번호 확인
                                 </th>
                                 <td class="p-3">
-                                    <div class="form-floating mb-1">
-                                        <input type="password" class="form-control" name="mpassword" id="mpassword"
-                                            value="" placeholder="비밀번호 확인" style="width: 300px;">
+                                    <div class="form-floating d-flex mb-1">
+                                        <input type="password" class="form-control" name="mpassword2" id="mpassword2"
+                                            v-model.trim="mpasswordDoubleCheck" @input="passwordDoubleCheck()"
+                                            placeholder="비밀번호 확인" style="width: 300px;">
                                         <label for="password" class="form-label">Password Check</label>
                                     </div>
+                                    <span v-if="mpasswordCheck2 === false" class="text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        비밀번호를 다시 한번 확인해주세요.
+                                    </span>
                                 </td>
                             </tr>
+                            <!-- 이메일 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">이메일</th>
                                 <td class="p-3">
-                                    <div class="d-flex align-items-center mb-1">
+                                    <div v-if="!emailChangeCheck" class="d-flex align-items-center mb-1">
+                                        <input type="text" class="form-control p-3 me-2" name="memail" id="memail"
+                                            value="" v-model.trim="store.state.member.memail" style="width: 250px;"
+                                            readonly>
+                                        <button class="btn btn-dark" @click="emailChangeBtn()">변경</button>
+                                    </div>
+                                    <div v-if="emailChangeCheck" class="d-flex align-items-center mb-1">
                                         <input type="text" class="form-control p-3 me-2" name="emailFront"
-                                            id="emailFront" value="kosaspace" style="width: 150px;" />
+                                            id="emailFront" v-model="memailFront" style="width: 150px;" />
                                         <span> @ </span>
                                         <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
-                                            value="gmail.com" style="width: 150px;" />
+                                            v-model.trim="memailBack" @input="emailPatternCheck()"
+                                            style="width: 150px;" />
                                     </div>
+                                    <span v-if="!memailCheck === false" class="text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        ※ 이메일 형식이 올바르지 않습니다. <br>
+                                        ex. kosaspace@naver.com
+                                    </span>
                                 </td>
                             </tr>
+                            <!-- 휴대폰 번호 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">휴대폰번호
                                 </th>
                                 <td class="p-3">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <!-- 휴대폰 앞 번호 -->
-                                        <input type="text" class="form-control p-3" name="mphonenumber1"
-                                            id="mphonenumber1" value="010" style="width: 80px;" readonly>
-                                        <span class="ms-2 me-2">-</span>
-                                        <!-- 휴대폰 중간 번호 -->
-                                        <input type="text" class="form-control p-3" name="mphonenumber2"
-                                            id="mphonenumber2" value="1234" style="width: 100px;"
-                                            placeholder="Mid Number">
-                                        <span class="ms-2 me-2">-</span>
-                                        <!-- 휴대폰 뒷 번호 -->
-                                        <input type="text" class="form-control p-3" name="mphonenumber3"
-                                            id="mphonenumber3" value="1234" style="width: 100px;"
-                                            placeholder="End Number" required>
+                                    <div class="d-flex">
+                                        <div class="d-flex align-items-center mb-1">
+                                            <!-- 휴대폰 앞 번호 -->
+                                            <input type="text" class="form-control p-3" name="mphonenumber1"
+                                                id="mphonenumber1" value="010" style="width: 80px;" readonly>
+                                            <span class="ms-2 me-2">-</span>
+                                            <!-- 휴대폰 중간 번호 -->
+                                            <input type="text" class="form-control p-3" name="mphonenumber2"
+                                                id="mphonenumber2" value="1234" style="width: 100px;"
+                                                v-model.trim="mphonenummiddle" placeholder="Mid Number">
+                                            <span class="ms-2 me-2">-</span>
+                                            <!-- 휴대폰 뒷 번호 -->
+                                            <input type="text" class="form-control p-3" name="mphonenumber3"
+                                                id="mphonenumber3" value="1234" style="width: 100px;"
+                                                v-model.trim="mphonenumend" @input="phonePatternCheck()"
+                                                placeholder="End Number" required>
+                                        </div>
+                                        <span v-if="mphoneCheck === false"
+                                            class="d-flex justify-content-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            휴대폰 번호 중간번호 4자리, 끝번호 4자리를 입력해주세요.
+                                        </span>
                                     </div>
                                 </td>
                             </tr>
@@ -135,8 +175,82 @@
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import { useStore } from 'vuex';
+import { ref } from 'vue';
 
 const router = useRouter();
+const store = useStore();
+
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    mrole: "",
+    menable: "",
+    mcreatedat: "",
+    mupdatedat: ""
+});
+
+let pwChangeCheck = ref(true);
+let mpasswordDoubleCheck = ref(""); // 비밀번호 확인
+let mpasswordCheck = ref(null);     // 비밀번호 유효성 (v-if)
+let mpasswordCheck2 = ref(null);    // 비밀번호 2차 확인 (v-if)
+let mpassword = ref("");
+let memailFront = ref("");
+let memailBack = ref("");
+let memail = ref("");
+let emailChangeCheck = ref(false);
+let memailCheck = ref(null);        // 
+let mphonenummiddle = ref("");
+let mphonenumend = ref("");
+let mphoneCheck = ref(null);
+
+
+// 비밀번호 유효성 검사
+const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;
+function passwordPatternCheck() {
+    if (mpasswordPattern.test(member.value.mpassword)) {
+        mpasswordCheck.value = true;
+    } else {
+        mpasswordCheck.value = false;
+    }
+}
+
+// 비밀번호 두 입력값 일치 확인
+function passwordDoubleCheck() {
+    if (member.value.mpassword === mpasswordDoubleCheck.value) {
+        mpasswordCheck2.value = true;
+    } else {
+        mpasswordCheck2.value = false;
+    }
+}
+// 이메일 유효성 검사
+const memailPattern = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i; // 정규식 틀림
+function emailPatternCheck() {
+    memail.value = memailFront.value + "@" + memailBack.value;
+    console.log(memail.value);
+    if (memailPattern.test(memail.value)) {
+        memailCheck.value = true;
+    } else {
+        memailCheck.value = false;
+    }
+}
+
+function phonePatternCheck() {
+
+}
+
+// 비밀번호 변경 버튼
+function pwChange() {
+    pwChangeCheck.value = !pwChangeCheck.value;
+}
+
+// 이메일 변경 버튼
+function emailChangeBtn() {
+    emailChangeCheck.value = !emailChangeCheck.value;
+}
 
 function handleCancle() {
     router.push(`/admin/dashboard`);

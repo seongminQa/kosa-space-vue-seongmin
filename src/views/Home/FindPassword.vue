@@ -1,9 +1,7 @@
 <template>
     <!-- contents -->
     <div class="headingArea">
-        <div class="title">
-            <h1 id="itemTitle">비밀번호 찾기</h1>
-        </div>
+        <!-- seongmin -->
         <div class="row d-flex justify-content-center align-items-center p-3 p-md-4 p-xl-5 vh-100">
             <div class="shadow col-12 col-md-6" style="height: 800px;">
                 <div class="card-body p-3 p-md-4 p-xl-5" style="height: 90%;">
