@@ -9,7 +9,7 @@ export default {
         memail: "znznfltm@gmail.com",
         mrole: "",
         menable: "",
-        mcreatedat: "",
+        mcreatedat: "2024년6월23일",
         mupdatedat: ""
     },
     getters: {

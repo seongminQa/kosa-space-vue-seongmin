@@ -102,6 +102,18 @@ const router = useRouter();
 const mid = ref("");
 const mpassword = ref("");
 
+const member = ref({
+    mid: "",
+    mname: "",
+    mphone: "",
+    mpassword: "",
+    memail: "",
+    mrole: "",
+    menable: "",
+    mcreatedat: "",
+    mupdatedat: ""
+});
+
 // const midVal = store.state.mid;
 // const mpasswordVal = store.state.mpassword;
 const midVal = store.state.member.mid;
@@ -116,13 +128,18 @@ function handleSubmit() {
     console.log("mpassword : ", mpassword.value);
     if (mid.value === midVal && mpassword.value === mpasswordVal) {
         if (mid.value.substring(0, 4) === "kosa") {
-            router.push("/admin");
+            // router.push("/admin");
+            member.value.mrole = "ROLE_ADMIN";
+            member.value.menable = 1;
         } else {
-            router.push("/trainee");
+            // router.push("/trainee");
+            member.value.mrole = "ROLE_USER";
+            member.value.menable = 1;
         }
     } else {
         checkIdPassword.value = true;
     }
+    console.log("member 객체 값 확인하기 (JSON 형태) : " + JSON.stringify(member.value));
 }
 
 </script>

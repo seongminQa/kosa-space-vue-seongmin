@@ -36,20 +36,24 @@
                                         <span class="ms-2 me-2">-</span>
                                         <!-- 휴대폰 중간 번호 -->
                                         <input type="text" class="form-control text-center" name="mphonenumber2"
-                                            v-model.trim="mphonenummiddle" id="mphonenumber2" value=""
-                                            placeholder="Mid Number" style="width: 120px; height: 45px" required>
+                                            v-model.trim="mphonenummiddle" id="mphonenumber2" placeholder="Mid Number"
+                                            style="width: 120px; height: 45px" @input="phonePatternmiddleCheck()"
+                                            required>
                                         <span class="ms-2 me-2">-</span>
                                         <!-- 휴대폰 뒷 번호 -->
                                         <input type="text" class="form-control text-center" name="mphonenumber3"
-                                            v-model.trim="mphonenumend" id="mphonenumber3" value=""
-                                            placeholder="End Number" style="width: 120px; height: 45px"
-                                            @input="phonePatternCheck()" required>
+                                            v-model.trim="mphonenumend" id="mphonenumber3" placeholder="End Number"
+                                            style="width: 120px; height: 45px" @input="phonePatternendCheck()" required>
                                     </div>
                                 </div>
-                                <span v-if="mphoneCheck === false" class="d-flex justify-content-center text-danger"
+                                <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
-                                    휴대폰 번호 중간번호 4자리, 끝번호 4자리를 입력해주세요.
-                                </span>
+                                    휴대폰 중간번호 4자리를 입력해주세요.
+                                </p>
+                                <p v-if="mphoneEndCheck === false" class="text-center text-danger"
+                                    style="font-size: 0.9em; height: 4px;">
+                                    휴대폰 끝번호 4자리를 입력해주세요.
+                                </p>
                             </div>
 
                             <!-- 이메일 입력 폼 -->
@@ -62,27 +66,27 @@
                                         <label for="email" class="form-label">email</label>
                                     </div>
                                 </div>
-                                <span v-if="memailCheck === false" class="d-flex justify-content-center text-danger"
+                                <p v-if="memailCheck === false" class="text-center text-danger"
                                     style="font-size: 0.9em; height: 4px;">
                                     ex: abcd@gmail.com 의 형식으로 기입해주십시오.
-                                </span>
+                                </p>
                             </div>
 
                             <!-- 아이디와 이메일이 일치하는지 보여주는 div 만들기? -->
                             <div class="d-flex justify-content-center col-12">
                                 <div class="d-grid">
-                                    <button class="btn btn-outline-dark btn-lg" type="submit" @click="handleFindId()"
-                                        style="width: 500px"><b>아이디
+                                    <button class="btn btn-outline-dark btn-lg" :class="onState()" type="submit"
+                                        @click="handleFindId()" style="width: 500px"><b>아이디
                                             찾기</b></button>
                                 </div>
                             </div>
                             <div class="col-12">
                                 <!-- 아이디와 이메일이 서로 일치한다면 -->
-                                <p v-if="introduceId" class="text-center">
+                                <p v-if="introduceId === true" class="text-center">
                                     회원님의 아이디는 <b style="color:red">'{{ idMessage }}'</b>으로 등록되어 있습니다.
                                 </p>
                                 <!-- 아이디와 이메일이 서로 일치하지 않는다면 -->
-                                <p v-if="checkIdEmail" class="text-center text-danger">
+                                <p v-if="introduceId === false" class="text-center">
                                     전화번호와 이메일에 일치하는 아이디가 없습니다.
                                 </p>
                             </div>
@@ -133,21 +137,52 @@ const member = ref({
     mupdatedat: ""
 });
 
+// v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
+let memailCheck = ref(null);
+let mphoneMiddleCheck = ref(null);
+let mphoneEndCheck = ref(null);
+let mphoneTotalCheck = ref(null);
+
+// 휴대폰 번호 중간, 끝 번호의 값을 받고 확인할 변수 선언
 let mphonenummiddle = ref("");
 let mphonenumend = ref("");
-let mphoneCheck = ref(null);
-let memailCheck = ref(null);
+
+// 휴대폰 번호와 이메일의 일치 여부에 따라 v-if를 사용할 DOM 생성 변수
 let introduceId = ref(null);
 
-// 휴대폰 번호 유효성 검사
+// 휴대폰 중간번호 유효성 검사
+function phonePatternmiddleCheck() {
+    const mphoneMiddlePattern = /^[0-9]{4}$/;
+    if (mphoneMiddlePattern.test(mphonenummiddle.value)) {
+        mphoneMiddleCheck.value = true;
+    } else {
+        mphoneMiddleCheck.value = false;
+    }
+    phonePatternCheck();
+}
+// 휴대폰 끝번호 유효성 검사
+function phonePatternendCheck() {
+    const mphoneEndPattern = /^[0-9]{4}$/;
+    if (mphoneEndPattern.test(mphonenumend.value)) {
+        mphoneEndCheck.value = true;
+    } else {
+        mphoneEndCheck.value = false;
+    }
+    phonePatternCheck();
+}
+
+// 휴대폰 번호 전체 유효성 검사
 const mphonePattern = /^(010)-\d{4}-\d{4}$/;
 function phonePatternCheck() {
-    member.value.mphone = "010" + "-" + mphonenummiddle.value + "-" + mphonenumend.value;
-    console.log(member.value.mphone);
+    member.value.mphone = "010-" + mphonenummiddle.value + "-" + mphonenumend.value;
+    console.log("member.value.mphone : " + member.value.mphone);
+    console.log("mphonenummiddle : " + mphonenummiddle.value);
+    console.log("mphonenumend : " + mphonenumend.value);
+    // mphoneTotalCheck.value = mphonePattern.test(member.value.mphone);
     if (mphonePattern.test(member.value.mphone)) {
-        mphoneCheck.value = true;
+        mphoneTotalCheck.value = true;
     } else {
-        mphoneCheck.value = false;
+        mphoneTotalCheck.value = false;
     }
 }
 
@@ -161,26 +196,30 @@ function emailPatternCheck() {
     }
 }
 
-let checkIdEmail = ref(null);
+// 휴대폰 번호와 이메일이 일치하는 계정을 찾았을 때 아이디를 v-if를 활용하여 DOM에 보여줄 변수
 let idMessage = ref("");
+
+// 아이디 찾기 버튼 활성화 / 비활성화 --> 회원가입 부분과 틀리다.
+function onState() {
+    if (mphoneTotalCheck.value && memailCheck.value) {
+        return "";
+    } else {
+        return "disabled";
+    }
+}
 
 // 아이디 찾기 버튼
 function handleFindId() {
-    if (member.value.mphone.length === 0) {
-        alert("휴대폰 번호를 입력해주세요.");
-    } else if (member.value.memail.length === 0) {
-        alert("이메일을 입력해주세요.");
+    if ((member.value.mphone === store.state.member.mphone) && (member.value.memail === store.state.member.memail)) {
+        introduceId.value = true;
+        member.value.mid = store.state.member.mid;
+        idMessage.value = store.state.member.mid;
     } else {
-        if ((member.value.mphone === store.state.member.mphone) && (member.value.memail === store.state.member.memail)) {
-            introduceId.value = true;
-            checkIdEmail.value = false;
-            idMessage.value = store.state.member.mid;
-        } else {
-            introduceId.value = false;
-            checkIdEmail.value = true;
-        }
+        introduceId.value = false;
     }
+    console.log(JSON.stringify(member.value));
 }
+
 
 </script>
 
