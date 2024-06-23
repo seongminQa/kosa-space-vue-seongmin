@@ -22,6 +22,7 @@
                     <!-- 회원정보수정 테이블 -->
                     <table class="table">
                         <tbody class="align-middle">
+                            <!-- 프로필 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center" style="width: 300px; ">프로필</th>
                                 <td class="d-flex flex-column p-3">
@@ -29,8 +30,8 @@
                                     <input type="file" class="form-control p-3 mt-2" name="tprofileimg" id="tprofileimg"
                                         accept="image/*" onchange="" style="width: 300px;">
                                 </td>
-
                             </tr>
+                            <!-- 아이디 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center" style="width: 300px; ">아이디</th>
                                 <td class="p-3">
@@ -38,6 +39,7 @@
                                         style="width: 300px;" readonly />
                                 </td>
                             </tr>
+                            <!-- 이름 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">이름
                                 </th>
@@ -46,6 +48,7 @@
                                         style="width: 300px;" readonly />
                                 </td>
                             </tr>
+                            <!-- 비밀번호 -->
                             <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
                                 <th class="text-center">비밀번호
                                 </th>
