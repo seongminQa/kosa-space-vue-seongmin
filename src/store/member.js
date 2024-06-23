@@ -7,8 +7,8 @@ export default {
         mname: "김성민",
         mphone: "010-1234-1234",
         memail: "znznfltm@gmail.com",
-        mrole: "",
-        menable: "",
+        mrole: "ROLE_USER",
+        menable: 1,
         mcreatedat: "2024년6월23일",
         mupdatedat: ""
     },

@@ -353,6 +353,7 @@ function handleIdCheck() {
     // --> handleSubmit에 2중으로 하나 더 조건을 달자...
 }
 
+// 회원가입 날짜 세팅
 // 계정 생성 일시와 일자까지만 포맷
 const date = new Date();
 let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
