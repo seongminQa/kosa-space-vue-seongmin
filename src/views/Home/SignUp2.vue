@@ -3,181 +3,206 @@
     <div class="headingArea">
         <!-- seongmin -->
         <div class="row d-flex justify-content-center align-items-center p-3 p-md-4 p-xl-5 vh-100">
-            <div class="shadow col-12 col-md-6" style="height: 800px;">
-                <div class="p-3 p-md-4 p-xl-5" style="height: 90%;">
-                    <div class="row">
-                        <div class="col-12">
-                            <div class="mb-5">
-                                <div class="text-center mb-4">
-                                    <a href="#!">
-                                        <!-- <img src="./assets/img/bsb-logo.svg"
+            <div class="d-flex" style="height: 90%; width: 80%;">
+                <div class="shadow col-12 col-md-6" style="height: 100%;">
+                    <div class="p-3 p-md-4 p-xl-5" style="height: 90%;">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="mb-5">
+                                    <div class="text-center mb-4">
+                                        <a href="#!">
+                                            <!-- <img src="./assets/img/bsb-logo.svg"
                                                                 alt="BootstrapBrain Logo" width="175" height="57"> -->
-                                    </a>
+                                        </a>
+                                    </div>
+                                    <h1 class="text-center">
+                                        <b> </b>
+                                        <b class="text-decoration-underline">Sign Up</b>
+                                    </h1>
                                 </div>
-                                <h1 class="text-center">
-                                    <b> </b>
-                                    <b class="text-decoration-underline">Sign Up</b>
-                                </h1>
                             </div>
                         </div>
-                    </div>
 
-                    <!-- 회원가입 폼 -->
-                    <form @submit.prevent="handleSubmit">
-                        <div class="row gy-3 overflow-hidden">
-                            <!-- 아이디 -->
-                            <div class="col-12 mb-2">
-                                <div class="d-flex justify-content-center">
-                                    <!-- 아이디 입력과 동시에 유효성 검사 -->
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" name="mid" id="mid"
-                                            v-model.trim="member.mid" placeholder="아이디" style="width: 400px;"
-                                            @input="idPatternCheck()" required>
-                                        <label for="mid" class="form-label ms-2">ID</label>
+                        <!-- 회원가입 폼 -->
+                        <form @submit.prevent="handleSubmit">
+                            <div class="row gy-3 overflow-hidden">
+                                <!-- 아이디 -->
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-center col-12">
+                                        <!-- 아이디 입력과 동시에 유효성 검사 -->
+                                        <div class="form-floating" style="width: 70%">
+                                            <input type="text" class="form-control" name="mid" id="mid"
+                                                v-model.trim="member.mid" placeholder="아이디" @input="idPatternCheck()"
+                                                required>
+                                            <label for="mid" class="form-label ms-2">ID</label>
+                                        </div>
+                                        <!-- 중복 아이디 검사 버튼 -->
+                                        <div class="d-flex align-items-center ms-1">
+                                            <span class="btn btn-secondary btn-sm" @click="handleIdCheck()">
+                                                중복<br>
+                                                체크
+                                            </span>
+                                        </div>
                                     </div>
-                                    <!-- 중복 아이디 검사 버튼 -->
-                                    <div class="d-flex align-items-center ms-3">
-                                        <span class="btn btn-secondary" @click="handleIdCheck()">중복체크</span>
-                                    </div>
-                                </div>
-                                <!-- 아이디 유효성 검사를 통한 DOM 생성 여부 -->
-                                <p v-if="midCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    영어 소문자와 숫자로 입력해주세요. (길이 5 ~ 12 공백 X)
-                                </p>
-                            </div>
-                            <!-- 이름 -->
-                            <div class="col-12 mb-2">
-                                <!-- 이름 입력과 동시에 유효성 검사 -->
-                                <div class="d-flex justify-content-center">
-                                    <div class="form-floating">
-                                        <input type="text" class="form-control" name="mname" id="mname"
-                                            v-model.trim="member.mname" placeholder="이름" style="width: 510px;"
-                                            @input="namePatternCheck()" required>
-                                        <label for="mname" class="form-label">Name</label>
+                                    <!-- 아이디 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="midCheck === false" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            영어 소문자와 숫자로 입력해주세요. (길이 5 ~ 12 공백 X)
+                                        </p>
                                     </div>
                                 </div>
-                                <!-- 이름 유효성 검사를 통한 DOM 생성 여부 -->
-                                <p v-if="mnameCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 5 공백 X)
-                                </p>
-                            </div>
-                            <!-- 비밀번호 입력 -->
-                            <div class="col-12 mb-2">
-                                <!-- 비밀번호 입력과 동시에 유효성 검사 -->
+                                <!-- 이름 -->
+                                <div class="col-12">
+                                    <!-- 이름 입력과 동시에 유효성 검사 -->
+                                    <div class="d-flex justify-content-center col-12">
+                                        <div class="form-floating" style="width: 80%">
+                                            <input type="text" class="form-control" name="mname" id="mname"
+                                                v-model.trim="member.mname" placeholder="이름" @input="namePatternCheck()"
+                                                required>
+                                            <label for="mname" class="form-label">Name</label>
+                                        </div>
+                                    </div>
+                                    <!-- 이름 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="mnameCheck === false" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            2글자 이상 한글만 입력 가능합니다. (길이 2 ~ 5 공백 X)
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- 비밀번호 입력 -->
+                                <div class="col-12">
+                                    <!-- 비밀번호 입력과 동시에 유효성 검사 -->
+                                    <div class="d-flex justify-content-center col-12">
+                                        <div class="form-floating" style="width: 80%">
+                                            <input type="password" class="form-control" name="mpassword" id="mpassword1"
+                                                v-model.trim="member.mpassword" value="" placeholder="비밀번호"
+                                                @input="passwordPatternCheck()" required>
+                                            <label for="password" class="form-label">Password</label>
+                                        </div>
+                                    </div>
+                                    <!-- 비밀번호 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="mpasswordCheck === false" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            ※ 영어 대/소문자, 숫자, 특수문자를 포함하여야 합니다. (길이 5 ~ 12 공백 X)
+                                        </p>
+                                    </div>
+                                </div>
+                                <!-- 비밀번호 일치 확인 -->
+                                <div class="col-12">
+                                    <!-- 2차 확인 비밀번호 입력과 동시에 1차 비밀번호와 값 일치 확인 -->
+                                    <div class="d-flex justify-content-center">
+                                        <div class="form-floating" style="width: 80%">
+                                            <input type="password" class="form-control" name="mpassword" id="mpassword2"
+                                                v-model.trim="mpasswordDoubleCheck" value="" placeholder="비밀번호 확인"
+                                                @input="passwordDoubleCheck()" required>
+                                            <label for="password" class="form-label">Password Check</label>
+                                        </div>
+                                    </div>
+                                    <!-- 비밀번호 값 일치를 통한 DOM 생성 여부 -->
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="mpasswordCheck2 === false" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            비밀번호를 다시 한번 확인해주세요.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- 이메일 입력 -->
+                                <div class="col-12">
+                                    <div class="d-flex justify-content-center">
+                                        <div class="form-floating" style="width: 80%">
+                                            <input type="email" class="form-control" name="memail" id="memail" value=""
+                                                v-model.trim="member.memail" placeholder="이메일"
+                                                @input="emailPatternCheck()" required>
+                                            <label for="email" class="form-label">email</label>
+                                        </div>
+                                    </div>
+                                    <!-- 이메일 유효성 검사를 통한 DOM 생성 여부 -->
+                                    <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0 mb-1">
+                                        <p v-if="memailCheck === false" class="text-center text-danger"
+                                            style="font-size: 0.9em; height: 4px;">
+                                            ex: abcd@gmail.com 의 형식으로 기입해주십시오.
+                                        </p>
+                                    </div>
+                                </div>
+
+                                <!-- 휴대폰입력 -->
                                 <div class="d-flex justify-content-center col-12">
-                                    <div class="form-floating">
-                                        <input type="password" class="form-control" name="mpassword" id="mpassword1"
-                                            v-model.trim="member.mpassword" value="" placeholder="비밀번호"
-                                            style="width: 510px;" @input="passwordPatternCheck()" required>
-                                        <label for="password" class="form-label">Password</label>
+                                    <div class="d-flex justify-content-center col-12">
+                                        <div class="d-flex align-items-center mb-1" style="width: 80%">
+                                            <span>Phone Number: </span>
+                                            <!-- 휴대폰 앞 번호 -->
+                                            <input type="text" class="form-control text-center ms-2"
+                                                name="mphonenumber1" id="mphonenumber1" value="010"
+                                                style="width: 15%; height: 50px" readonly>
+                                            <span class="ms-2 me-2">-</span>
+                                            <!-- 휴대폰 중간 번호 -->
+                                            <input type="text" class="form-control text-center" name="mphonenumber2"
+                                                v-model.trim="mphonenummiddle" id="mphonenumber2" placeholder="Mid"
+                                                style="width: 20%; height: 50px" @input="phonePatternmiddleCheck()"
+                                                required>
+                                            <span class="ms-2 me-2">-</span>
+                                            <!-- 휴대폰 뒷 번호 -->
+                                            <input type="text" class="form-control text-center" name="mphonenumber3"
+                                                v-model.trim="mphonenumend" id="mphonenumber3" placeholder="End"
+                                                style="width: 20%; height: 50px" @input="phonePatternendCheck()"
+                                                required>
+                                        </div>
                                     </div>
                                 </div>
-                                <!-- 비밀번호 유효성 검사를 통한 DOM 생성 여부 -->
-                                <p v-if="mpasswordCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    ※ 영어 대/소문자, 숫자, 특수문자를 포함하여야 합니다. (길이 5 ~ 12 공백 X)
-                                </p>
-                            </div>
-                            <!-- 비밀번호 일치 확인 -->
-                            <div class="col-12 mb-2">
-                                <!-- 2차 확인 비밀번호 입력과 동시에 1차 비밀번호와 값 일치 확인 -->
-                                <div class="d-flex justify-content-center">
-                                    <div class="form-floating">
-                                        <input type="password" class="form-control" name="mpassword" id="mpassword2"
-                                            v-model.trim="mpasswordDoubleCheck" value="" placeholder="비밀번호 확인"
-                                            style="width: 510px;" @input="passwordDoubleCheck()" required>
-                                        <label for="password" class="form-label">Password Check</label>
-                                    </div>
+                                <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0">
+                                    <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        휴대폰 중간번호 4자리를 입력해주세요.
+                                    </p>
                                 </div>
-                                <!-- 비밀번호 값 일치를 통한 DOM 생성 여부 -->
-                                <p v-if="mpasswordCheck2 === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    비밀번호를 다시 한번 확인해주세요.
-                                </p>
-                            </div>
-
-                            <!-- 이메일 입력 -->
-                            <div class="col-12 mb-2">
-                                <div class="d-flex justify-content-center">
-                                    <div class="form-floating">
-                                        <input type="email" class="form-control" name="memail" id="memail" value=""
-                                            v-model.trim="member.memail" placeholder="이메일" style="width: 510px;"
-                                            @input="emailPatternCheck()" required>
-                                        <label for="email" class="form-label">email</label>
-                                    </div>
+                                <div class="d-flex justify-content-center align-content-center col-12 m-0 p-0">
+                                    <p v-if="mphoneEndCheck === false" class="text-center text-danger"
+                                        style="font-size: 0.9em; height: 4px;">
+                                        휴대폰 끝번호 4자리를 입력해주세요.
+                                    </p>
                                 </div>
-                                <!-- 이메일 유효성 검사를 통한 DOM 생성 여부 -->
-                                <p v-if="memailCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    ex: abcd@gmail.com 의 형식으로 기입해주십시오.
-                                </p>
-                            </div>
-
-                            <!-- 휴대폰입력 -->
-                            <div class="col-12 mb-4">
-                                <div class="d-flex justify-content-center">
-                                    <div class="d-flex align-items-center mb-1">
-                                        <span class="">Phone Number : </span>
-                                        <!-- 휴대폰 앞 번호 (010) 고정 -->
-                                        <input type="text" class="form-control text-center ms-3" name="mphonenumber1"
-                                            id="mphonenumber1" value="010" style="width: 80px; height: 45px" readonly>
-                                        <span class="ms-2 me-2">-</span>
-                                        <!-- 휴대폰 중간 번호 입력과 동시에 유효성 검사 -->
-                                        <input type="text" class="form-control text-center" name="mphonenumber2"
-                                            v-model.trim="mphonenummiddle" id="mphonenumber2" placeholder="Mid Number"
-                                            style="width: 120px; height: 45px" @input="phonePatternmiddleCheck()"
-                                            required>
-                                        <span class="ms-2 me-2">-</span>
-                                        <!-- 휴대폰 뒷 번호 입력과 동시에 유효성 검사 -->
-                                        <input type="text" class="form-control text-center" name="mphonenumber3"
-                                            v-model.trim="mphonenumend" id="mphonenumber3" placeholder="End Number"
-                                            style="width: 120px; height: 45px" @input="phonePatternendCheck()" required>
-                                    </div>
-                                </div>
-                                <p v-if="mphoneMiddleCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    휴대폰 중간번호 4자리를 입력해주세요.
-                                </p>
-                                <p v-if="mphoneEndCheck === false" class="text-center text-danger"
-                                    style="font-size: 0.9em; height: 4px;">
-                                    휴대폰 끝번호 4자리를 입력해주세요.
-                                </p>
-                            </div>
-                            <div class="col-12 mt-4">
-                                <div class="d-grid d-flex justify-content-center">
-                                    <RouterLink to="/" class="btn btn-outline-danger btn-lg me-4">
-                                        <b>취소</b>
-                                    </RouterLink>
-                                    <!-- <button class="btn btn-outline-dark btn-lg"
+                                <div class="col-12 mt-4">
+                                    <div class="d-grid d-flex justify-content-center">
+                                        <RouterLink to="/" class="btn btn-outline-danger btn-lg me-4">
+                                            <b>취소</b>
+                                        </RouterLink>
+                                        <!-- <button class="btn btn-outline-dark btn-lg"
                                                             type="submit"><b>회원가입</b></button> -->
-                                    <button class="btn btn-outline-dark btn-lg" :class="btnShow" type="submit">
-                                        <b>회원가입</b>
-                                    </button>
+                                        <button class="btn btn-outline-dark btn-lg" :class="btnShow" type="submit">
+                                            <b>회원가입</b>
+                                        </button>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center col-12">
+                                    <div class="" style="width: 80%">
+                                        <div class="d-grid d-flex justify-content-center">
+                                            <RouterLink to="/find/id" class="link-secondary text-decoration-none"
+                                                style="font-size: 0.8rem">아이디
+                                                찾기</RouterLink>
+                                            <span class="ms-2 me-2" style="font-size: 0.8rem;"> | </span>
+                                            <RouterLink to="/find/password" class="link-secondary text-decoration-none"
+                                                style="font-size: 0.8rem">
+                                                비밀번호 찾기</RouterLink>
+                                            <span class="ms-2 me-2" style="font-size: 0.8rem"> | </span>
+                                            <RouterLink to="/signUp" class="link-secondary text-decoration-none"
+                                                style="font-size: 0.8rem">
+                                                회원가입</RouterLink>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
-
-                    <div class="row mt-3">
-                        <div class="col-12">
-                            <div class="d-flex gap-2 gap-md-4 flex-column flex-md-row justify-content-md-center">
-                                <RouterLink to="/find/id" class="link-secondary text-decoration-none">아이디
-                                    찾기</RouterLink>
-                                <span> | </span>
-                                <RouterLink to="/find/password" class="link-secondary text-decoration-none">
-                                    비밀번호 찾기</RouterLink>
-                            </div>
-                        </div>
+                        </form>
                     </div>
                 </div>
-            </div>
-
-            <div class="shadow col-12 col-md-6" style="height: 800px; border: 2px solid red">
-                <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
-                    src="https://cdn.dribbble.com/users/3578290/screenshots/16190754/media/24bf4cc8a0b3bfddd2bcdfb2c4d12e73.jpg?resize=1000x750&vertical=center"
-                    height="100%">
+                <div class="shadow col-12 col-md-6" style="height: 100%; border: 2px solid red">
+                    <img class="img-fluid rounded-start w-100 h-100 object-fit-cover" loading="lazy"
+                        src="https://cdn.dribbble.com/users/3578290/screenshots/16190754/media/24bf4cc8a0b3bfddd2bcdfb2c4d12e73.jpg?resize=1000x750&vertical=center"
+                        height="100%">
+                </div>
             </div>
         </div>
     </div>
