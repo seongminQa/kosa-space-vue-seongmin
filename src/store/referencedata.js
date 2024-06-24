@@ -2,21 +2,16 @@ export default {
     namespaced: true,
 
     state: {
-        mid: "M2001",
-        cno: 1,
-        tsex: "남자",
-        tage: "32",
-        taddress: "서울시 강동구 천호동",
-        tfield: 0,
-        tacademic: "대학교",
-        tshcoolname: "(춘천)강원대학교",
-        tmajor: "전기전자",
-        tminor: "전자통신",
-        tgrade: "3.98/4.5",
-        tstatus: "졸업",
-        tprofileimg: "",
-        tprofileoname: "",
-        tprofiletype: ""
+        refno:1,
+        cno:1,
+        mid:"M2001",
+        refcategory:0, // 0은 과제 // 1은 수업 자료를 나타냄
+        refattach:"",
+        refattachoname:"",
+        refattachtype:"",
+        refattachsize:"",
+        refcreatedat:"6월23일",
+        refupdatedat:"6월24일"
     },
     getters: {
         getUserId(state, getters, rootState, rootGetters) {

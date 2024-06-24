@@ -305,7 +305,8 @@ function handleCancle() {
     router.push(`/admin/dashboard`);
 }
 
-// 회원정보수정 날짜 세팅
+// (임시) back-end에서 작업할 것.
+// 회원정보수정 날짜 세팅 --> 임시이기 때문에 여기에다 해놓음. 원래 버튼 클릭 이벤트 발생시 저장해야함.
 // 계정 생성 일시와 일자까지만 포맷
 const date = new Date();
 let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
@@ -314,17 +315,17 @@ member.value.mupdatedat = dateFormatVal;
 // 수정 버튼
 function handleCheck() {
     // 비밀번호 변경 버튼 여부에 따라 member 객체 값 저장
-    if(pwChangeCheck.value === true) {
+    if (pwChangeCheck.value === true) {
         member.value.mpassword = store.state.member.mpassword;
     }
     // 이메일 변경 버튼 여부에 따라 member 객체 값 저장
-    if(emailChangeCheck.value === true) {
+    if (emailChangeCheck.value === true) {
         member.value.memail = store.state.member.memail;
     } else {
         member.value.memail = memailFront.value + "@" + memailBack.value;
     }
     // 휴대폰 변경 버튼 여부에 따라 member 객체 값 저장
-    if(phoneChangeCheck.value === true) {
+    if (phoneChangeCheck.value === true) {
         member.value.mphone = store.state.member.mphone;
     } else {
         member.value.mphone = "010-" + mphonenummiddle.value + "-" + mphonenumend.value;

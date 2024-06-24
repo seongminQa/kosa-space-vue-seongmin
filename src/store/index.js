@@ -1,6 +1,7 @@
 import { createStore } from 'vuex'
 import member from './member.js';
 
+
 const store = createStore({
   state: {
   },
