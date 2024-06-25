@@ -10,6 +10,13 @@
                 <div class="title mb-4">
                     <h1 id="itemTitle">대시보드</h1>
                 </div>
+                <div class="d-flex justify-content-start mt-1 me-3">
+                    <div class="InpBox">
+                        <select name="brand" id="brand" title="리스트 정렬">
+                            <option v-for="(item, index) in educenter.ename" :key="index" :value="item" selected>{{ item }}</option>
+                        </select>
+                    </div>
+                </div>
                 <!--  -->
                 <div class="row d-flex">
                     <!-- 왼쪽 부분 -->
@@ -272,6 +279,33 @@
 </template>
 
 <script setup>
+import { ref } from 'vue';
+
+const educenter = ref({
+    ecno: "",
+    ename: ["송파", "가산", "혜화"],
+    ecaddress: "",
+});
+
+const trainingroom = ref({
+    trno: "",
+    ecno: "",
+    trname: ["L1", "L2", "L3", "L4"],
+    trcapacity: [25, 30, 26, 22],
+    trenable: 1
+});
+
+const course = ref({
+    cname:["MSA 1차", "MSA 2차", "클라우드"],
+    cstartdate:"2024.02.26",
+    cenddate:"2024.07.26"
+});
+
+const attendance = ref({
+    
+});
+
+
 </script>
 
 <style scoped>

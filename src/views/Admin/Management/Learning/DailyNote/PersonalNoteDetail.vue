@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>학습관리 > 데일리 과제 관리 > 개인별 데일리 과제 상세 조회</span>
         </div>
@@ -12,46 +12,50 @@
 
             <PersonalProfileHeader class="mt-2 mb-3" />
             <div class="table">
-                <table class="" style="width: 1000px;">
+                <table class="" style="width: 100%;">
                     <thead class="text-center align-middle" style="height: 70px;">
-                        <th style="width: 55%">과제 제목</th>
+                        <th style="width: 45%">과제 제목</th>
                         <th style="width: 10%">용량</th>
+                        <th style="width: 15%">수업일</th>
                         <th style="width: 15%">작성일</th>
                         <th style="width: 10%">주차별 태그</th>
                     </thead>
                     <tbody class="text-center align-middle">
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
-                                    target="_blank" style="text-decoration-line: none; color:black; ">Day 70. 2024-06-18
+                            <td><a :href="dailynote.dnotionurl" target="_blank"
+                                    style="text-decoration-line: none; color:black; ">Day 70. 2024-06-18
                                     컴포넌트 설계작업</a></td>
                             <td>40KB</td>
+                            <td>2024.06.18(수)</td>
                             <td>2024.06.18</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
-                                target="_blank" style="text-decoration-line: none; color:black; ">Day 69. 2024-06-17 시각화 자료 추가 보충작업</a></td>
+                            <td><a :href="dailynote.dnotionurl" target="_blank"
+                                    style="text-decoration-line: none; color:black; ">Day 69. 2024-06-17 시각화 자료 추가
+                                    보충작업</a></td>
                             <td>13MB</td>
-                            <td>2024.06.17</td>
+                            <td>2024.06.17(화)</td>
+                            <td>2024.06.20</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
                         </tr>
                         <tr style="border-bottom:1px solid #dcdcdc; height: 50px">
-                            <td><a href="https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4"
-                                target="_blank" style="text-decoration-line: none; color:black; ">Day 68. 2024-06-16 Rest API 구조 설계</a></td>
+                            <td><a :href="dailynote.dnotionurl" target="_blank"
+                                    style="text-decoration-line: none; color:black; ">Day 68. 2024-06-16 Rest API 구조
+                                    설계</a></td>
                             <td>56KB</td>
+                            <td>2024.06.16(월)</td>
                             <td>2024.06.16</td>
                             <td><span class="btn btn-dark btn-sm">10주차</span></td>
                         </tr>
                     </tbody>
-                    <tfoot>
-                        <td colspan="5" class="text-center" style="height: 50px">
-                            <b class="text-danger">페이지네이션 추가</b>
-                        </td>
-                    </tfoot>
                 </table>
-                <div class="btn_big_wrap">
-                    <BaseButtonSubmit @click="handleCheck">뒤로가기</BaseButtonSubmit>
+                <div class="mt-3 d-flex justify-content-between">
+                    <RouterLink to="/trainee/dailynote/list" class="btn btn-dark ms-3">목록으로</RouterLink>
                 </div>
+                <!-- <div class="btn_big_wrap">
+                    <BaseButtonSubmit @click="handleCheck()">뒤로가기</BaseButtonSubmit>
+                </div> -->
             </div>
         </div>
     </div>
@@ -62,6 +66,19 @@ import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHead
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import { onMounted, ref } from 'vue';
+
+const dailynote = ref({
+    // don: 1,
+    //mid: "M2001",
+    dtitle: "",
+    dnotionurl: "https://opalescent-sternum-860.notion.site/Vue-31b721d5b54141e1b092f759fbae295a?pvs=4",
+    //dsize: "", // back에서 계산
+    //dhashtag: "", // back에서 계산
+    dsubmitedat: "",
+    // dcreatedat: "",
+    // dupdatedat: ""
+})
 
 const router = useRouter();
 

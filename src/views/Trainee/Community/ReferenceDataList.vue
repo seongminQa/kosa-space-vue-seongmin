@@ -2,14 +2,24 @@
     <!-- contents -->
     <div class="headingArea">
         <!--  -->
-        <div class="d-flex justify-content-end mt-1 me-3">
+        <!-- <div class="d-flex justify-content-end mt-1 me-3">
             <select id="ancategory" class="form-control mb-2" v-model.trim="referencedata.refcategory"
-                style="width: 65px;">
-                <option value="전체">전체</option>
+                style="width: 70px;">
+                <option value="전체" selected>전체</option>
                 <option value="수업">수업</option>
                 <option value="과제">과제</option>
                 <option value="기타">기타</option>
             </select>
+        </div> -->
+        <div class="d-flex justify-content-end mt-1 me-3">
+            <div class="InpBox">
+                <select name="brand" id="brand" title="리스트 정렬" v-model.trim="referencedata.refcategory">
+                    <option value="전체" selected>전체</option>
+                    <option value="수업">수업</option>
+                    <option value="과제">과제</option>
+                    <option value="기타">기타</option>
+                </select>
+            </div>
         </div>
         <div>
             <table class="mt-1" style="width: 100%;">
@@ -73,7 +83,26 @@
 </template>
 
 <script setup>
-import referencedata from '@/store/referencedata';
+// import referencedata from '@/store/referencedata';
+import { ref } from 'vue';
+import { onUpdated } from 'vue';
+
+const referencedata = ref({
+    refno: 1,
+    cno: 1,
+    mid: "M2001",
+    refcategory: "전체", // 0은 과제 // 1은 수업 자료를 나타냄
+    refattach: "",
+    refattachoname: "",
+    refattachtype: "",
+    refattachsize: "",
+    refcreatedat: "6월23일",
+    refupdatedat: "6월24일"
+});
+
+onUpdated(() => {
+    console.log(referencedata.value.refcategory);
+});
 
 </script>
 
@@ -93,5 +122,25 @@ import referencedata from '@/store/referencedata';
 #itemTitle {
     font-weight: 700;
     font-size: 1.2rem;
+}
+
+.InpBox {
+    display: inline-block;
+    vertical-align: top;
+}
+
+.InpBox select {
+    padding: 0 28px 0 12px;
+    width: 100%;
+    height: 40px;
+    border: 1px solid #232323;
+    border-radius: 4px;
+    box-sizing: border-box;
+    color: #232323;
+    font-size: 14px;
+    line-height: 20px;
+    text-align: left;
+    vertical-align: top;
+    background-color: #dbdbdb0e;
 }
 </style>
