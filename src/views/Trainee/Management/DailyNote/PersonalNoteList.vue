@@ -12,9 +12,9 @@
 
             <PersonalProfileHeader class="mt-2 mb-3" />
             <div class="d-flex mb-4">
-                <input class="me-3" type="date" id="" name="" min="" value="">
+                <VueDatePicker class="mb-3" locale="ko" style="width:80%; margin-left: 20px" v-model="startDate" />
                 <span class="me-3">~</span>
-                <input type="date" id="" name="" min="" value="">
+                <VueDatePicker class="mb-3" locale="ko" style="width:80%; margin-left: 20px" v-model="endDate" />
             </div>
             <div class="table">
                 <table class="" style="width: 1000px;">
@@ -31,8 +31,7 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail"
-                                    class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -44,8 +43,7 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail"
-                                    class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -57,8 +55,7 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">미제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail"
-                                    class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -74,7 +71,7 @@
                 </table>
             </div>
             <div>
-                <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn">과제 상세 보기</BaseButtonUpdate>
+                <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn()">과제 상세 보기</BaseButtonUpdate>
             </div>
         </div>
     </div>
@@ -82,10 +79,21 @@
 
 <script setup>
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import { useRouter } from 'vue-router';
+import { useRouter, ref } from 'vue-router';
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
+import VueDatePicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/dist/main.css'
+import { onMounted } from 'vue';
 
 const router = useRouter();
+const date = ref();
+const startDate = ref();
+const endDate = ref();
+
+onMounted(() => {
+    const registerDate = new Date();
+    date.value = registerDate;
+});
 
 function handleDailyNoteBtn() {
     router.push('/trainee/dailynote/detail');
