@@ -12,9 +12,10 @@
 
             <PersonalProfileHeader class="mt-2 mb-3" />
             <div class="d-flex mb-4">
-                <VueDatePicker class="mb-3" locale="ko" style="width:80%; margin-left: 20px" v-model="startDate" />
-                <span class="me-3">~</span>
-                <VueDatePicker class="mb-3" locale="ko" style="width:80%; margin-left: 20px" v-model="endDate" />
+                <VueDatePicker class="mb-3" locale="ko" style="width:20%; margin-left: 20px" v-model.trim="startDate"
+                    :enable-time-picker="false" :format="formatDate" position="left" placeholder="시작 날짜" />
+                <VueDatePicker class="mb-3" locale="ko" style="width:20%; margin-left: 20px" v-model.trim="endDate"
+                    :enable-time-picker="false" :format="formatDate" position="left" placeholder="종료 날짜" />
             </div>
             <div class="table">
                 <table class="" style="width: 1000px;">
@@ -79,21 +80,36 @@
 
 <script setup>
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import { useRouter, ref } from 'vue-router';
+import { useRouter } from 'vue-router';
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
 import VueDatePicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/dist/main.css'
-import { onMounted } from 'vue';
+import { onMounted, ref } from 'vue';
 
 const router = useRouter();
-const date = ref();
-const startDate = ref();
-const endDate = ref();
+let startDate = ref();
+let endDate = ref();
 
-onMounted(() => {
-    const registerDate = new Date();
-    date.value = registerDate;
-});
+const formatDate = (date) => {
+    const year = date.getFullYear();
+    const month = date.getMonth() + 1;
+    const day = date.getDate();
+
+    // 날짜 앞에 0을 붙여야 하는 경우
+    if (month || day < 10) {
+        const zeroDay = ('00' + day).slice(-2);
+        const zeroMonth = ('00' + month).slice(-2);
+
+        return `${year}.${zeroMonth}.${zeroDay}`;
+    } else {
+
+        return `${year}.${month}.${day}`;
+    }
+}
+
+// onMounted(() => {
+
+// });
 
 function handleDailyNoteBtn() {
     router.push('/trainee/dailynote/detail');
