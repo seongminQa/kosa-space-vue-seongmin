@@ -285,6 +285,8 @@ function namePatternCheck() {
 }
 // 비밀번호 유효성 검사
 const mpasswordPattern = /^[a-zA-Z0-9]{5,12}$/;     // 비밀번호 유효성 규칙 확실하게 정해야함.
+// 비밀번호 유효성 ( 영어 대/소문자와 숫자, 특수문자를 하나이상 포함 ) 
+// /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]+$/
 function passwordPatternCheck() {
     if (mpasswordPattern.test(member.value.mpassword)) {
         mpasswordCheck.value = true;
