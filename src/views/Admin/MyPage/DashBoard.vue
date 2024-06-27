@@ -386,10 +386,10 @@ onMounted(() => {
 function test() {
     console.log(testa.value);
     // educenter.value.forEach(element => {
-        
+
     // });
     let tempEcno = "";
-    for(let item in educenter) {
+    for (let item in educenter) {
         console.log("item = " + item.ecname);
         // console.log("item.ecno = " + item.ecno);
         // if(item.ecname === testa.value) {
@@ -404,7 +404,7 @@ function test() {
     선택한 '교육장'에 따라서 셀렉트 태그 밑의 대시보드 화면의 구성이 변경되도록 할 것이다.
     Back단의 REST API를 불러와서 처리.
     1. educenterAPI --> respones(data)
-    data.ecname
+    2. 
 */
 
 
