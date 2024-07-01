@@ -14,6 +14,13 @@ import PhosphorIcons from "@phosphor-icons/vue"
 import jQuery from 'jquery'
 // global.$ = jQuery
 
+// axiosConfig ?
+import axiosConfig from './apis/axiosConfig';
+
+// 브라우저 재실행시 인증 정보를 가져옴
+// 인증 정보를 store에 저장
+store.dispatch("loadAuth");
+
 createApp(App)
 .use(store)
 .use(router)

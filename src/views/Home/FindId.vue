@@ -127,20 +127,11 @@
 
 <script setup>
 import { ref } from 'vue';
-import { useStore } from 'vuex';
-
-const store = useStore();
+import memberAPI from '@/apis/memberAPI';
 
 const member = ref({
-    mid: "",
-    mname: "",
     mphone: "",
-    mpassword: "",
-    memail: "",
-    mrole: "",
-    menable: "",
-    mcreatedat: "",
-    mupdatedat: ""
+    memail: ""
 });
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
@@ -215,15 +206,16 @@ function onState() {
 }
 
 // 아이디 찾기 버튼
-function handleFindId() {
-    if ((member.value.mphone === store.state.member.mphone) && (member.value.memail === store.state.member.memail)) {
-        introduceId.value = true;
-        member.value.mid = store.state.member.mid;
-        idMessage.value = store.state.member.mid;
-    } else {
-        introduceId.value = false;
-    }
-    console.log(JSON.stringify(member.value));
+async function handleFindId() {
+    // introduceId.value = true;
+    // introduceId.value = false;
+    console.log("JSON.stringify(member.value) = " + JSON.stringify(member.value));
+
+    const data = JSON.parse(JSON.stringify(member.value));
+    console.log(data);
+    const response = await memberAPI.findId(data);
+
+    console.log(response.data);
 }
 
 

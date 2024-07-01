@@ -212,6 +212,7 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, watch } from 'vue';
+import memberAPI from '@/apis/memberAPI';
 
 const store = useStore();
 const router = useRouter();
@@ -222,10 +223,6 @@ const member = ref({
     mphone: "",
     mpassword: "",
     memail: "",
-    mrole: "",
-    menable: "",
-    mcreatedat: "",
-    mupdatedat: ""
 });
 
 /*
@@ -380,12 +377,6 @@ function handleIdCheck() {
     // --> handleSubmit에 2중으로 하나 더 조건을 달자...
 }
 
-// 회원가입 날짜 세팅
-// 계정 생성 일시와 일자까지만 포맷
-const date = new Date();
-let dateFormatVal = date.getFullYear() + '년' + (date.getMonth() + 1) + '월' + date.getDate() + '일';
-member.value.mcreatedat = dateFormatVal;
-
 // 전체 입력값 확인하기
 // let totalCheck = ref(false);
 let btnShow = ref("disabled");
@@ -410,26 +401,25 @@ function onState() {
 }
 
 // 회원가입 버튼 이벤트
-function handleSubmit() {
+async function handleSubmit() {
     if (member.value.memail === store.state.member.memail) {
         alert("해당 이메일로 이미 가입한 아이디가 있습니다.");
         // 아이디 찾기로 넘어가시겠습니까? --> 모달 추가해볼까..
     } else if (member.value.mid === midVal) {
         alert("중복된 아이디가 있습니다! 다시 한번 중복 체크해주세요!")
-    } else {
-        // router.push("/signup/complete");
-        if (member.value.mid.substring(0, 4) === "kosa") {
-            // router.push("/admin");
-            member.value.mrole = "ROLE_ADMIN";
-            member.value.menable = 1;
-        } else {
-            // router.push("/trainee");
-            member.value.mrole = "ROLE_USER";
-            member.value.menable = 1;
-        }
-
     }
-    console.log(JSON.stringify(member.value));
+
+    console.log("member.value = " + member.value);
+    console.log("JSON.stringify(member.value) = " + JSON.stringify(member.value));
+    console.log("JSON.parse(JSON.stringify(member.value) = " + JSON.parse(JSON.stringify(member.value)));
+
+    const data = JSON.parse(JSON.stringify(member.value));
+    // const data = JSON.stringify(member.value);
+    const response = await memberAPI.signup(data);
+
+    // 회원가입이 성공한다면
+    alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");
+    router.push("/");
 }
 
 
