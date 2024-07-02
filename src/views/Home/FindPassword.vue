@@ -81,17 +81,20 @@
                                 </div>
 
                                 <!-- 비밀번호 찾기 버튼 -->
-                                <div class="d-flex justify-content-center col-12">
+                                <div v-if="introducePassword !== true" class="d-flex justify-content-center col-12">
                                     <button class="btn btn-outline-dark btn-lg" :class="onState()" type="submit"
                                         @click="handleFindPassword()" style="width: 80%"><b>비밀번호
                                             찾기</b></button>
                                 </div>
+                                <div v-if="introducePassword === true" class="d-grid d-flex justify-content-center">
+                                    <RouterLink to="/" class="btn btn-outline-dark btn-lg" type="submit"
+                                        style="width: 80%"><b>로그인하기</b></RouterLink>
+                                </div>
                                 <!-- 이름과 아이디와 이메일이 서로 일치할시 정보를 보여줄 div태그 -->
                                 <div class="col-12">
                                     <p v-if="introducePassword === true" class="text-center">
-                                        회원님께서 <b style="color:red">'{{ store.state.member.mcreatedat }}'</b>에
-                                        회원가입시 기재 해주신<br>
-                                        <b style="color:red">{{ member.memail }}</b>로 정보를 발송하였습니다.
+                                        <b style="color:blue">'{{ memberId }}'</b>의
+                                        비밀번호를 <b style="color:red">'12345'</b>로 초기화하였습니다.
                                     </p>
                                     <!-- 아이디와 이메일이 서로 일치하지 않는다면 -->
                                     <p v-if="introducePassword === false" class="text-center text-danger">
@@ -132,19 +135,15 @@
 <script setup>
 import { ref } from 'vue';
 import { useStore } from 'vuex';
+import authAPI from '@/apis/authAPI';
 
 const store = useStore();
 
 const member = ref({
     mid: "",
     mname: "",
-    mphone: "",
-    mpassword: "",
     memail: "",
-    mrole: "",
-    menable: "",
-    mcreatedat: "",
-    mupdatedat: ""
+    mcreatedat: ""
 });
 
 // v-if를 사용하여 DOM 생성 여부를 위한 변수 선언
@@ -153,7 +152,7 @@ let midCheck = ref(null);
 let memailCheck = ref(null);
 
 // 이름과 아이디, 이메일의 일치 여부에 따라 v-if를 사용할 DOM 생성 변수
-let introducePassword = ref("");
+let introducePassword = ref(null);
 
 // --------------------------------------------------
 // ####유효성 검사####
@@ -196,16 +195,24 @@ function onState() {
     }
 }
 
+// 응답으로 받은 아이디를 저장하는 변수
+let memberId;
+
 // 비밀번호 찾기 버튼
-function handleFindPassword() {
-    if ((member.value.mname === store.state.member.mname) && (member.value.mid === store.state.member.mid)
-        && member.value.memail === store.state.member.memail) {
+async function handleFindPassword() {
+    console.log("1. JSON.stringify(member.value) = " + JSON.stringify(member.value));
+    console.log("2. JSON.parse(JSON.stringify(member)) = " + JSON.parse(JSON.stringify(member)));
+    console.log("3. JSON.parse(JSON.stringify(member.value)) = " + JSON.parse(JSON.stringify(member.value)));
+
+    const response = await authAPI.findPassword(member.value.mname, member.value.mid, member.value.memail);
+    console.log(response.data);
+
+    if (response.data !== "none") {
         introducePassword.value = true;
-        member.value.mid = store.state.member.mid;
+        memberId = response.data;
     } else {
         introducePassword.value = false;
     }
-    console.log(JSON.stringify(member.value));
 }
 
 </script>

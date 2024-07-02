@@ -23,19 +23,19 @@
                         </div>
 
                         <!-- 로그인 폼 -->
-                        <form @submit.prevent="handleSubmit">
+                        <form @submit.prevent="handleLogin()">
                             <div class="row gy-3 overflow-hidden">
                                 <div class="d-flex justify-content-center col-12">
                                     <div class="form-floating mb-3" style="width: 80%">
-                                        <input type="text" class="form-control" name="mid" id="mid" v-model="mid"
-                                            placeholder="아이디" required>
+                                        <input type="text" class="form-control" name="mid" id="mid"
+                                            v-model.trim="member.mid" placeholder="아이디" required>
                                         <label for="mid" class="form-label">ID</label>
                                     </div>
                                 </div>
                                 <div class="d-flex justify-content-center col-12">
                                     <div class="form-floating mb-1" style="width: 80%">
                                         <input type="password" class="form-control" name="mpassword" id="mpassword"
-                                            v-model="mpassword" placeholder="비밀번호" required>
+                                            v-model.trim="member.mpassword" placeholder="비밀번호" required>
                                         <label for="password" class="form-label">Password</label>
                                     </div>
                                 </div>
@@ -49,10 +49,9 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <div class="d-grid d-flex justify-content-center" v-if="checkIdPassword">
+                                    <div class="d-grid d-flex justify-content-center" v-if="checkIdPassword === true">
                                         <p class="text-center" style="font-size: 1rem">
-                                            <b class="text-danger">아이디(로그인 전용 아이디) 또는 비밀번호를 잘못 입력했습니다.
-                                                입력하신 내용을 다시 확인해주세요.</b>
+                                            <b class="text-danger">아이디(로그인 전용 아이디) 또는 비밀번호를 다시 확인해주세요.</b>
                                         </p>
                                     </div>
                                 </div>
@@ -97,51 +96,57 @@
 import { computed, ref } from 'vue';
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
+import authAPI from '@/apis/authAPI';
 
 const store = useStore();
 const router = useRouter();
 
-const mid = ref("");
-const mpassword = ref("");
-
 const member = ref({
     mid: "",
-    mname: "",
-    mphone: "",
     mpassword: "",
-    memail: "",
-    mrole: "",
-    menable: "",
-    mcreatedat: "",
-    mupdatedat: ""
+    mrole: ""
 });
 
-// const midVal = store.state.mid;
-// const mpasswordVal = store.state.mpassword;
-const midVal = store.state.member.mid;
-const mpasswordVal = store.state.member.mpassword;
+// const midVal = store.state.member.mid;
+// const mpasswordVal = store.state.member.mpassword;
 
 // 아이디 비밀번호 불일치시 나오는 메시지 DOM 생성 조건
 const checkIdPassword = ref(false);
 
 // 로그인 했을 때
-function handleSubmit() {
-    console.log("mid : ", mid.value);
-    console.log("mpassword : ", mpassword.value);
-    if (mid.value === midVal && mpassword.value === mpasswordVal) {
-        if (mid.value.substring(0, 4) === "kosa") {
-            router.push("/admin");
-            member.value.mrole = "ROLE_ADMIN";
-            member.value.menable = 1;
-        } else {
-            router.push("/trainee");
-            member.value.mrole = "ROLE_USER";
-            member.value.menable = 1;
+async function handleLogin() {
+    console.log("mid : ", member.value.mid);
+    console.log("mpassword : ", member.value.mpassword);
+    try {
+        const data = JSON.parse(JSON.stringify(member.value));
+        console.log("member 객체 확인" + data);
+        const response = await authAPI.login(data);
+        // response는 Rest API에서 map을 반환받는다.
+        // Keys: {"result", "mid", "accessToken"}, values: {"success / fail", mid, accessToken}
+        if (response.data.result === "success") {
+            const payload = {
+                mid: response.data.mid,
+                accessToken: response.data.accessToken,
+                mrole: response.data.mrole
+            };
+
+            // 스토어에 저장
+            store.dispatch("saveAuth", payload);
+
+            // 권한에 따른 라우터 이동
+            if (payload.mrole === "ROLE_ADMIN") {
+                router.push("/admin");
+            } else if (payload.mrole === "ROLE_USER") {
+                router.push("/trainee");
+            } else {
+                alert("인증 정보를 확인해주세요.");
+                router.push("/");
+            }
         }
-    } else {
+    } catch (error) {
+        console.log(error);
         checkIdPassword.value = true;
     }
-    console.log("member 객체 값 확인하기 (JSON 형태) : " + JSON.stringify(member.value));
 }
 
 </script>
