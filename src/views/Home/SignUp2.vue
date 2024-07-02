@@ -212,7 +212,7 @@
 import { useStore } from 'vuex';
 import { useRouter } from 'vue-router';
 import { ref, watch } from 'vue';
-import memberAPI from '@/apis/memberAPI';
+import authAPI from '@/apis/authAPI';
 
 const store = useStore();
 const router = useRouter();
@@ -415,7 +415,7 @@ async function handleSubmit() {
 
     const data = JSON.parse(JSON.stringify(member.value));
     // const data = JSON.stringify(member.value);
-    const response = await memberAPI.signup(data);
+    const response = await authAPI.signup(data);
 
     // 회원가입이 성공한다면
     alert("회원가입이 완료되었습니다. 로그인 페이지로 이동합니다.");

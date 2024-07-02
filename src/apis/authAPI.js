@@ -17,11 +17,22 @@ function login(member) {
     return axios.post("/login", member);
 }
 
-// 아이디 찾기
-// function findId(mphone, memail) {
-function findId(member) {
+// // 아이디 찾기
+// // function findId(mphone, memail) {
+// function findId(member) {
+//     // return axios.get("/find/id", {params: {mphone, memail}});
+//     console.log("memberAPI findId 메소드 실행");
+//     console.log(member);
+//     return axios.get("/find/id", member);
+// }
+function findId(mphone, memail) {
     // return axios.get("/find/id", {params: {mphone, memail}});
-    return axios.get("/find/id", member);
+    console.log("memberAPI findId 메소드 실행");
+    return axios.get("/find/id", {
+        params: {
+            "mphone": mphone,
+            "memail": memail
+        }});
 }
 
 // 비밀번호 찾기
