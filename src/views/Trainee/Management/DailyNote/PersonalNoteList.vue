@@ -12,10 +12,9 @@
 
             <PersonalProfileHeader class="mt-2 mb-3" />
             <div class="d-flex mb-4">
-                <VueDatePicker class="mb-3" locale="ko" style="width:20%; margin-left: 20px" v-model.trim="startDate"
-                    :enable-time-picker="false" :format="formatDate" position="left" placeholder="시작 날짜" />
-                <VueDatePicker class="mb-3" locale="ko" style="width:20%; margin-left: 20px" v-model.trim="endDate"
-                    :enable-time-picker="false" :format="formatDate" position="left" placeholder="종료 날짜" />
+                <input class="me-3" type="date" id="" name="" min="" value="">
+                <span class="me-3">~</span>
+                <input type="date" id="" name="" min="" value="">
             </div>
             <div class="table">
                 <table class="" style="width: 1000px;">
@@ -32,7 +31,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -44,7 +44,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -56,7 +57,8 @@
                             <td>M2001</td>
                             <td><span class="btn btn-dark">미제출</span></td>
                             <td>
-                                <RouterLink to="/trainee/dailynote/detail" class="btn btn-outline-dark btn-sm">과정
+                                <RouterLink to="/trainee/dailynote/detail"
+                                    class="btn btn-outline-dark btn-sm">과정
                                     상세보기</RouterLink>
                             </td>
                             <td>
@@ -72,7 +74,7 @@
                 </table>
             </div>
             <div>
-                <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn()">과제 상세 보기</BaseButtonUpdate>
+                <BaseButtonUpdate class="mt-3" @click="handleDailyNoteBtn">과제 상세 보기</BaseButtonUpdate>
             </div>
         </div>
     </div>
@@ -82,34 +84,8 @@
 import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
 import { useRouter } from 'vue-router';
 import PersonalProfileHeader from '@/components/UIComponents/PersonalProfileHeader.vue'
-import VueDatePicker from '@vuepic/vue-datepicker';
-import '@vuepic/vue-datepicker/dist/main.css'
-import { onMounted, ref } from 'vue';
 
 const router = useRouter();
-let startDate = ref();
-let endDate = ref();
-
-const formatDate = (date) => {
-    const year = date.getFullYear();
-    const month = date.getMonth() + 1;
-    const day = date.getDate();
-
-    // 날짜 앞에 0을 붙여야 하는 경우
-    if (month || day < 10) {
-        const zeroDay = ('00' + day).slice(-2);
-        const zeroMonth = ('00' + month).slice(-2);
-
-        return `${year}.${zeroMonth}.${zeroDay}`;
-    } else {
-
-        return `${year}.${month}.${day}`;
-    }
-}
-
-// onMounted(() => {
-
-// });
 
 function handleDailyNoteBtn() {
     router.push('/trainee/dailynote/detail');

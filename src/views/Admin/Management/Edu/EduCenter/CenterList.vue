@@ -13,79 +13,152 @@
                 <BaseButtonCreate class="mt-3" @click="handleCreateBtn">교육장 등록</BaseButtonCreate>
             </div>
         </div>
-
-        <div class="educenter-wrap">
-            <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_1.png" class="educenter-img">
-                <div class="card-body">
-                    <h5 class="educenter-name">송파 교육장</h5>
-                    <p class="educenter-text">
-                        (05717) 서울특별시 송파구 중대로 135, <br>
-                        서관 12층 (가락동) 한국소프트웨어산업협회
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <span class="educenter-createdat">[등록일시] 2024-06-17 20:24</span>
-                    <div class="btn-wrap" style="margin-left: 12px;">
-                        <button type="button" class="updatebtn" @click="handleUpdateBtn">수정</button>
-                        <button type="button" class="deletebtn">삭제</button>
+        <div class="container mt-3" style="margin-left: %;">
+            <div class="educenter-wrap row">
+                <div v-for="educenter in educenterlist" :key="educenter.ecno" class="card col-md-4 col-sm-6 mb-4"
+                    style="width: 22rem; margin-right: 13px;">
+                    <!-- 캐러셀 부분 -->
+                    <div :id="`carouselExampleControls${educenter.ecno}`" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            <div v-for="(url, index) in educenter.attachments" :key="index" class="carousel-item active"
+                                data-bs-interval="1000000">
+                                <img :src="url" class="d-block w-100" alt="..." style="width: 150px; height: 200px;">
+                            </div>
+                        </div>
+                        <button class="carousel-control-prev" type="button"
+                            :data-bs-target="`#carouselExampleControls${educenter.ecno}`" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button"
+                            :data-bs-target="`#carouselExampleControls${educenter.ecno}`" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
                     </div>
-                </div>
-            </div>
-
-            <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_2.png" class="educenter-img">
-                <div class="card-body">
-                    <h5 class="educenter-name">가산 교육장</h5>
-                    <p class="educenter-text">
-                        서울시 금천구 가산동 378-28, <br>
-                        우림라이온스벨리 B동 1207호
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <span class="educenter-createdat">[등록일시] 2024-06-17 20:24</span>
-                    <div class="btn-wrap" style="margin-left: 12px;">
-                        <button type="button" class="updatebtn" @click="handleUpdateBtn">수정</button>
-                        <button type="button" class="deletebtn">삭제</button>
+                    <!-- 교육장 목록 내용 -->
+                    <div class="card-body">
+                        <p class="educenter-name" style="font-size: 20px;"><b>{{ educenter.ecname }}</b></p>
+                        <p class="educenter-text">
+                            ({{ educenter.ecpostcode }}) {{ educenter.ecaddress }}<br>
+                            ,{{ educenter.ecdetailaddress }}
+                        </p>
                     </div>
-                </div>
-            </div>
-
-            <div class="card" style="width: 25rem; margin-right: 13px;">
-                <img src="@/assets/educenter/educenter_3.png" class="educenter-img">
-                <div class="card-body">
-                    <h5 class="educenter-name">혜화 교육장</h5>
-                    <p class="educenter-text">
-                        서울특별시 종로구 창경궁로 254 동원빌딩 7층
-                    </p>
-                </div>
-                <div class="card-footer">
-                    <span class="educenter-createdat">[등록일시] 2024-06-17 20:34</span>
-                    <div class="btn_wrap" style="margin-left: 12px;">
-                        <button type="button" class="updatebtn" @click="handleUpdateBtn">수정</button>
-                        <button type="button" class="deletebtn">삭제</button>
+                    <div class="card-footer">
+                        <div class="educenter-createdat">[등록일시] {{ educenter.eccreatedat }}</div>
+                        <div v-if="educenter.ecupdatedat" class="educneter-updatedat">[수정일시] {{ educenter.ecupdatedat }}
+                        </div>
+                        <div class="btn-wrap" style="margin-left: 12px;">
+                            <RouterLink :to="`/admin/educenter/update?ecno=${educenter.ecno}`">수정</RouterLink>
+                            <button type="button" class="deletebtn" @click="confirmRemove(educenter.ecno)">삭제</button>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <DeleteCheckDialog @confirmDelete="handleRemove" />
 </template>
 
 <script setup>
 import BaseButtonCreate from '@/components/UIComponents/BaseButtonCreate.vue';
-import BaseButtonUpdate from '@/components/UIComponents/BaseButtonUpdate.vue';
-import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import { useRouter } from 'vue-router';
+import educenterAPI from "@/apis/educenterAPI";
+import { onMounted, ref } from 'vue';
+import DeleteCheckDialog from './Dialog/DeleteCheckDialog.vue';
+import { Modal } from 'bootstrap';
+
+
+let deleteCheckDialog = null;
+
+
+
+//상태 정의
+const educenter = ref({
+    ecno: "",
+    ecname: "",
+    ecaddress: "",
+    ecpostcode: "",
+    ecdetailaddress: "",
+    eanoList: []
+});
+
 
 const router = useRouter();
 
+//교육장 목록 상태정의
+const educenterlist = ref([]);
+let selectedEcno = null;
+
+//교육장 목록을 가져오는 메소드
+async function fetchEducenterList() {
+    try {
+        const response = await educenterAPI.getEducenterList();
+        educenterlist.value = response.data;
+
+        //각 교육장의 첨부파일 URL 가져오기
+        for (const center of educenterlist.value) {
+            if (center.eanoList && center.eanoList.length > 0) {
+                center.attachments = [];
+                for (const eano of center.eanoList) {
+                    const url = await getAttach(eano);
+                    center.attachments.push(url);
+                }
+            }
+        }
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//컴포넌트가 마운트 될 때 교육장 목록 가져오기
+onMounted(() => {
+    fetchEducenterList();
+    // modal 객체 생성
+    deleteCheckDialog = new Modal(document.querySelector("#deleteCheckDialog"));
+});
+
+
+
+//eano를 통해 해당 첨부파일을 가져오는 함수
+async function getAttach(eano) {
+    try {
+        const response = await educenterAPI.getEducenterAttach(eano);
+        const blob = response.data;
+        return URL.createObjectURL(blob);
+    }
+    catch (error) {
+        console.log(error);
+    }
+}
+
+
+//등록버튼 누르면 실행되는
 function handleCreateBtn() {
     router.push('/admin/educenter/create');
 }
 
-function handleUpdateBtn() {
-    router.push('/admin/educenter/update');
+//삭제버튼 누를 때 확인 모달 표시
+function confirmRemove(ecno) {
+    selectedEcno = ecno;
+    deleteCheckDialog.show();
+
 }
+
+
+
+//삭제버튼 눌렀을때 실행
+async function handleRemove() {
+    try {
+        await educenterAPI.educenterDelete(selectedEcno);
+        educenterlist.value = educenterlist.value.filter(item => item.ecno !== selectedEcno);
+        deleteCheckDialog.hide();
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 
 </script>
 
@@ -106,6 +179,19 @@ small,
 textarea,
 select {
     font-family: 'Noto Sans KR', sans-serif;
+}
+
+
+
+
+.educenter-wrap {
+    display: grid;
+    width: 100%;
+    gap: 35px 60px;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: auto;
+    grid-auto-flow: row;
+    padding-bottom: 72px;
 }
 
 .headingArea {
@@ -138,7 +224,7 @@ select {
 }
 
 .card-footer {
-    display: flex;
+    display: block;
 }
 
 .updatebtn {
@@ -176,6 +262,4 @@ select {
     background-color: #232323;
     border: 1px solid black;
     margin-left: 10px;
-}
-
-</style>
+}</style>

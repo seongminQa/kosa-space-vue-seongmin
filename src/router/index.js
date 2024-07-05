@@ -15,9 +15,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
-  routes,
-  // 라우터 가드 확인해보기 ( https://v3.router.vuejs.org/kr/guide/advanced/navigation-guards.html )
-  // 라우터 가드 영조씨 ( https://joshua1988.github.io/web-development/vuejs/vue-router-navigation-guards/ )
+  routes
 })
 
 export default router
