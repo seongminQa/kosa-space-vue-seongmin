@@ -165,7 +165,9 @@ async function traineeList(ecname, cname) {
         console.log("response.data = " + JSON.parse(JSON.stringify(response.data[1].trno)));
         // mid에 맞는 이미지 파일
         const url = await traineeImg(responseList.value.mid);
+        console.log(url);
         responseList.value.tprofileimg.push(url);
+        console.log(responseList.value.tprofileimg);
     } catch (error) {
         console.log("traineeList 메소드 실패");
     }
@@ -175,8 +177,10 @@ async function traineeList(ecname, cname) {
 async function traineeImg(mid) {
     // /download/traineeattach/{mid}
     try {
+        console.log("tprofileimg 메소드 실행");
         const response = await traineeInfoAPI.getTraineeAttach(mid);
         const blob = response.data;
+        console.log("blob = " + blob);
         return URL.createObjectURL(blob);
     } catch (error) {
         console.log(error);
