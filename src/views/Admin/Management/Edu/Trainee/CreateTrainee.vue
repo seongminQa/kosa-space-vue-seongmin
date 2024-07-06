@@ -123,7 +123,7 @@
                                 <td colspan="3">
                                     <div class="td">
                                         <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
-                                        <input type="text" v-model.trim="request.ecdetailaddress" placeholder="상세주소"
+                                        <input type="text" v-model.trim="request.taddressdetail" placeholder="상세주소"
                                             style="width:500px; margin-top: 3%;">
                                     </div>
                                 </td>
@@ -235,7 +235,7 @@ let request = ref({
     tprofileimg: null,
     tprofileoname: "",
     tprofiletype: "",
-    ecdetailaddress: ""
+    taddressdetail: ""
 });
 
 // const tprofileimg = ref(null);
@@ -451,7 +451,7 @@ async function handleSubmit() {
     // 우편번호와 주소, 상세주소 넣기
     formData.append("tpostcode", request.value.tpostcode);
     formData.append("taddress", request.value.taddress);
-    formData.append("ecdetailaddress", request.value.ecdetailaddress);
+    formData.append("taddressdetail", request.value.taddressdetail);
     // tprofileimg: "",
     // tprofileoname: "",
     // tprofiletype: ""

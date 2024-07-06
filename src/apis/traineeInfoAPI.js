@@ -18,6 +18,11 @@ function traineeRegister(request) { // form-data 형식으로 데이터를 전�
     });
 }
 
+function traineeInfo(mid) {
+    console.log("traineeInfoAPI traineeInfo 메소드 실행");
+    return axios.get("/admin/trainee/info");
+}
+
 
 export default {
     traineeRegister
