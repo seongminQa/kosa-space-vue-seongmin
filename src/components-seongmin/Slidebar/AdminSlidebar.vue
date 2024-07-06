@@ -88,11 +88,6 @@
             </a>
             <ul class="sub-menu">
               <li>
-                <RouterLink to="/admin/attendance/approve">
-                  교육생 출결 승인 처리
-                </RouterLink>
-              </li>
-              <li>
                 <RouterLink to="/admin/attendance/list">
                   출결 현황 조회
                 </RouterLink>
@@ -200,9 +195,7 @@ min-height: 100vh;
 */
 
 .sidebar {
-  position: sticky;
-  top: 0; /* 화면 상단에 고정 */
-  align-self: flex-start; /* 추가된 속성 */
+  position: relative;
   width: 290px;
   height: 100vh;
   display: flex;

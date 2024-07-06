@@ -1,5 +1,5 @@
 <template>
-        <button type="button" class="submitbtn">
+        <button type="button" class="canclebtn">
             <slot>button</slot>
         </button>
 </template>
@@ -8,7 +8,7 @@
 </script>
 
 <style scoped>
-.submitbtn {
+.canclebtn {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -23,9 +23,7 @@
     border-radius: 3px;
     width: 200px;
     flex: 0 0 200px;
-    color: white;
-    background-color: #232323;
+    background-color: white;
     border: 1px solid black;
-    margin-left: 10px;
 }
 </style>

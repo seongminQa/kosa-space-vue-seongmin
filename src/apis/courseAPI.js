@@ -20,9 +20,14 @@ function getCourseAttach(eano) {
     return axios.get("/edu/download/attach/" + eano, {responseType:"blob"});
 }
 
+// 교육과정 이름 전체 조회
+function getCourseNameList(ecname) {
+    return axios.get("/edu/course/cnamelist?ecname=" + ecname);
+}
 
 export default {
     create,
     getCourseList,
-    getCourseAttach
+    getCourseAttach,
+    getCourseNameList
 }

@@ -1,14 +1,14 @@
 <template>
-        <button type="button" class="submitbtn">
-            <slot>button</slot>
-        </button>
+    <button type="button" class="updatebtn">
+        <slot>update button</slot>
+    </button>
 </template>
 
 <script setup>
 </script>
 
 <style scoped>
-.submitbtn {
+.updatebtn {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -24,8 +24,8 @@
     width: 200px;
     flex: 0 0 200px;
     color: white;
-    background-color: #232323;
-    border: 1px solid black;
+    background-color: #22C55E;
+    border: 1px solid white;
     margin-left: 10px;
 }
 </style>

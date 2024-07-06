@@ -20,11 +20,10 @@
                             <tr>
                                 <td colspan="4">
                                     <div style="text-align:left">
-                                        <img ref="trainee.tprofileimg" src="@/assets/kyungseob.jpg" width="110" height="150"
-                                            class="ms-5">
+                                        <img ref="trainee.tprofileimg" src="@/assets/kyungseob.jpg" width="110"
+                                            height="150" class="ms-5">
                                     </div>
                                 </td>
-
                             </tr>
                             <tr>
                                 <td>교육생 이름</td>
@@ -35,8 +34,8 @@
                             <tr>
                                 <td>학력</td>
                                 <td>
-                                    <select class="form-control p-3" id="tacademic" name="tacademic" style="width: 150px;"
-                                        v-model="trainee.tacademic" required>
+                                    <select class="form-control p-3" id="tacademic" name="tacademic"
+                                        style="width: 150px;" v-model="trainee.tacademic" required>
                                         <option value="고등학교">고등학교</option>
                                         <option value="대학교">대학교</option>
                                     </select>
@@ -57,19 +56,19 @@
                                             <label for="tschoolname" class="form-label">학교명</label>
                                         </div>
                                         <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model="trainee.tmajor" type="text" class="form-control" name="tmajor"
-                                                id="" value="" placeholder="" style="width: 150px;">
+                                            <input v-model="trainee.tmajor" type="text" class="form-control"
+                                                name="tmajor" id="" value="" placeholder="" style="width: 150px;">
                                             <label for="tmajor" class="form-label">주전공</label>
                                         </div>
                                         <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model="trainee.tminor" type="text" class="form-control" name="tminor"
-                                                id="" value="" placeholder="" style="width: 150px;">
+                                            <input v-model="trainee.tminor" type="text" class="form-control"
+                                                name="tminor" id="" value="" placeholder="" style="width: 150px;">
                                             <label for="tminor" class="form-label">부전공</label>
                                         </div>
                                         <!-- 학점에 대한 유효성 검사 #.### ? -->
                                         <div class="form-floating mt-2" style="width: 150px">
-                                            <input v-model="trainee.tgrade" type="text" class="form-control" name="tgrade"
-                                                id="" value="" placeholder="" style="width: 150px;">
+                                            <input v-model="trainee.tgrade" type="text" class="form-control"
+                                                name="tgrade" id="" value="" placeholder="" style="width: 150px;">
                                             <label for="tgrade" class="form-label">평균학점</label>
                                         </div>
                                         <!-- <div class="form-floating mt-2" style="width: 150px">
@@ -105,8 +104,8 @@
                             <tr>
                                 <td>주소</td>
                                 <div class="td">
-                                        <DaumPostCode3 @send-daumpostcode="postcodeinfo"/>
-                                    </div>  
+                                    <DaumPostCode3 @send-daumpostcode="postcodeinfo" />
+                                </div>
                             </tr>
                             <tr>
                                 <td>핸드폰 번호</td>
@@ -142,9 +141,16 @@
 <script setup>
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
-import { useRouter } from 'vue-router';
-import { ref } from 'vue';
+import { useRouter, useRoute } from 'vue-router';
+import { onMounted, ref } from 'vue';
 import DaumPostCode3 from './DaumPostCode3.vue';
+
+const route = useRoute();
+const mid = route.query.mid;
+
+onMounted(() => {
+    console.log(mid);
+})
 
 //상태정의
 let trainee = ref({
@@ -184,7 +190,7 @@ function handleCancle() {
 
 //수정 버튼
 function handleSubmit() {
-     // const formData = new FormData();
+    // const formData = new FormData();
 
     //입력값들 넣기
     // formData.append("tname", trainee.value.mname);
@@ -199,8 +205,8 @@ function handleSubmit() {
     // formData.append("taddress", trainee.value.taddress);
     // formData.append("mphone", trainee.value.mphone);
     // formData.append("tstatus", trainee.value.tstatus);
-   
-    
+
+
 
     //파일넣기
     // const elAttach = tattach.value;

@@ -1,14 +1,14 @@
 <template>
-        <button type="button" class="submitbtn">
-            <slot>button</slot>
-        </button>
+    <button type="button" class="createbtn">
+        <slot>create button</slot>
+    </button>
 </template>
 
 <script setup>
 </script>
 
 <style scoped>
-.submitbtn {
+.createbtn {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
@@ -23,9 +23,9 @@
     border-radius: 3px;
     width: 200px;
     flex: 0 0 200px;
-    color: white;
+    color: #22C55E;
     background-color: #232323;
-    border: 1px solid black;
+    border: 2px solid #22C55E;
     margin-left: 10px;
 }
 </style>
