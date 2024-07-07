@@ -13,31 +13,27 @@
 
         <div class="align" style="display: flex;">
             <div class="InpBox">
-                <select id="room" title="교육장 선택">
-                    <option value="" selected="">교육장 선택</option>
-                    <option value="option1">전체</option>
-                    <option value="option1">미정</option>
-                    <option value="option2">송파교육센터</option>
-                    <option value="option3">가산교육센터</option>
-                    <option value="option3">혜화교육센터</option>
+                <select id="room" title="교육장 선택" @change="handleFilterChange" v-model="filter.ecname">
+                    <option value="교육장 선택" disabled selected>교육장 선택</option>
+                    <option v-for="name in nameList" :value="name" :key="name">{{ name }}</option>                    
                 </select>
             </div>
             <div class="InpBox" style="margin-left: 1%;">
-                <select id="status" title="진행 여부">
+                <select id="status" title="진행 여부" @change="handleFilterChange">
                     <option value="" selected="">진행 여부</option>
-                    <option value="option1">전체</option>
-                    <option value="option1">진행 예정</option>
-                    <option value="option2">진행중</option>
-                    <option value="option3">진행 완료</option>
+                    <option value="전체">전체</option>
+                    <option value="진행예정">진행예정</option>
+                    <option value="진행중">진행중</option>
+                    <option value="진행완료">진행완료</option>
                 </select>
             </div>
             <div class="InpBox" style="margin-left: 1%;">
-                <select id="professor" title="강사진">
+                <select id="professor" title="강사진" @change="handleFilterChange">
                     <option value="" selected="">강사진</option>
-                    <option value="option1">전체</option>
-                    <option value="option1">신용권</option>
-                    <option value="option2">마성일</option>
-                    <option value="option3">조효석</option>
+                    <option value="전체">전체</option>
+                    <option value="신용권">신용권</option>
+                    <option value="마성일">마성일</option>
+                    <option value="조효석">조효석</option>
                 </select>
             </div>
 
@@ -48,9 +44,9 @@
         <!-- 교육과정 목록 부분 -->
         <div>
             <ul class="self_exam_list">
-                <li v-for="course in courselist" :key="course.cno" class="personality_test">
-                    <div v-for="(url,index) in course.attachments" :key="index" class="course-img">
-                        <img :src="url" class="course-img-detail" style="width: 150px; height: 140px;">
+                <li v-for="course in filteredCourses" :key="course.cno" class="personality_test">
+                    <div v-for="(url, index) in course.attachments" :key="index" class="course-img">
+                        <img :src="course.attachments[0]" class="course-img-detail" style="width: 150px; height: 140px;">
                     </div>
                     <h5 class="tit">{{ course.cname }}
                         <div style="display: flex;">
@@ -59,7 +55,11 @@
                             <span class="new_mark3" style="margin-left:2%;">{{ course.cprofessor }}</span>
                         </div>
                         <div style="margin-top: 2%;">
-                            <button type="button" class="btn btn-outline-secondary btn-sm" @click="handleUpdateBtn">수정</button>
+                            <RouterLink :to="`/admin/course/update?cno=${course.cno}`">
+                                <button type="button" class="btn btn-outline-secondary btn-sm"
+                                    @click="handleUpdateBtn">수정</button>
+                            </RouterLink>
+
                             <button type="button" class="btn btn-outline-dark btn-sm" style="margin-left: 2%;">삭제</button>
                         </div>
                     </h5>
@@ -69,14 +69,14 @@
 
                         <span class="contents_mark" style="float:left;">요일시간</span>
                         <p class="contents_txt">{{ course.ctrainingdate }} / {{ course.ctrainingtime }}</p>
-                     
+
                         <span class="contents_mark" style="float:left;">수강인원</span>
                         <p class="contents_txt">{{ course.ctotalnum }}명</p>
 
                         <span class="contents_mark" style="float:left;">교육장</span>
-                        <p class="contents_txt">{{ course.ecname }}</p>          
+                        <p class="contents_txt">{{ course.ecname }}</p>
                     </div>
-                </li>               
+                </li>
             </ul>
         </div>
     </div>
@@ -85,7 +85,8 @@
 <script setup>
 import { useRouter } from 'vue-router';
 import courseAPI from '@/apis/courseAPI';
-import { onMounted, ref } from 'vue';
+import { onMounted, ref, computed } from 'vue';
+import educenterAPI from '@/apis/educenterAPI';
 
 const router = useRouter();
 
@@ -97,9 +98,29 @@ function handleUpdateBtn() {
     router.push('/admin/course/update');
 }
 
+// 필터 상태 객체 정의
+const filter = ref({
+    ecname: "교육장 선택"
+});
+
+
+
+// 교육장 이름 전체 목록을 가져오는 메소드
+const nameList = ref([]);
+
+async function educenterNameList() {
+    try {
+        const response = await educenterAPI.educenterNameList();
+        nameList.value = response.data;
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
 //교육과정 상태 정의
-const course = ref({ 
-    cno:"",  
+const course = ref({
+    cno: "",
     ecname: "",
     cname: "",
     ccode: "",
@@ -112,10 +133,31 @@ const course = ref({
     ctrainingdate: "",
     ctrainingtime: "",
     trno: "",
-    cstatus:"",
+    cstatus: "",
     eanoList: []
 });
 
+//선택된 필터의 상태값 정의
+const selectedRoom = ref('');
+const selectedStatus = ref('');
+const selectedProfessor = ref('');
+
+//필터링된 교육과정 목록을 반환하는 계산된 속성
+const filteredCourses = computed(() => {
+    return courselist.value.filter(course => {
+        const roomMatch = selectedRoom.value === '' || selectedRoom.value === '전체' || course.ecname === selectedRoom.value;
+        const statusMatch = selectedStatus.value === '' || selectedStatus.value === '전체' || course.cstatus === selectedStatus.value;
+        const professorMatch = selectedProfessor.value === '' || selectedProfessor.value === '전체' || course.cprofessor === selectedProfessor.value;
+        return roomMatch && statusMatch && professorMatch;
+    });
+});
+
+//선택된 필터 값 변경 시 호출되는 메소드
+function handleFilterChange() {
+    selectedRoom.value = document.getElementById('room').value;
+    selectedStatus.value = document.getElementById('status').value;
+    selectedProfessor.value = document.getElementById('professor').value;
+}
 
 
 
@@ -128,7 +170,7 @@ async function fetchCourseList() {
         const response = await courseAPI.getCourseList();
         courselist.value = response.data;
 
-        
+
 
         //각 교육과정 첨부파일 URL 가져오기
         for (const course of courselist.value) {
@@ -141,24 +183,24 @@ async function fetchCourseList() {
             }
         }
 
-    } catch(error) {
+    } catch (error) {
         console.log(error)
     }
 }
 
 //컴포넌트가 마운트 될때 교육과정 목록 가져오기
-onMounted(()=> {
+onMounted(() => {
     fetchCourseList();
-
+    educenterNameList();
 });
 
 //eano를 통해 해당 첨부 파일을 가져오는 함수
 async function getAttach(eano) {
-    try{       
+    try {
         const response = await courseAPI.getCourseAttach(eano);
         const blob = response.data;
         return URL.createObjectURL(blob);
-    } catch(error) {
+    } catch (error) {
         console.log(error);
     }
 }
@@ -182,7 +224,9 @@ p,
 span,
 small,
 textarea,
-select, th, td {
+select,
+th,
+td {
     font-family: 'Noto Sans KR', sans-serif;
 }
 
@@ -296,7 +340,8 @@ select, th, td {
     border-bottom: 1px solid #eaedf4;
 }
 
-ul, li {
+ul,
+li {
     list-style: none;
 }
 
@@ -403,7 +448,7 @@ ul {
 }
 
 .contents_txt {
- 
+
     margin-bottom: 8px;
     color: #373f57;
     font-size: 16px;
@@ -450,5 +495,4 @@ ul {
     font-weight: 600;
     line-height: 40px;
 }
-
 </style>

@@ -14,10 +14,24 @@ function getCourseList() {
 }
 
 
-//교육장 목록에  교육장 사진 가져오기(캐러셀)
+//교육과정 목록에  교육장 사진 가져오기(캐러셀)
 function getCourseAttach(eano) {
     //PathVariable로 데이터전송
     return axios.get("/edu/download/attach/" + eano, {responseType:"blob"});
+}
+
+//교육과정 단건조회(수정전 내용보여주기)
+function getCourseByCno(cno) {
+    return axios.get("/edu/course/info", {
+        params: {
+            cno: cno
+        }
+    });
+}
+
+//교육과정 수정
+function update(FormData) {
+    return axios.put("/edu/course/update", FormData);
 }
 
 // 교육과정 이름 전체 조회
@@ -25,9 +39,13 @@ function getCourseNameList(ecname) {
     return axios.get("/edu/course/cnamelist?ecname=" + ecname);
 }
 
+
+
 export default {
     create,
     getCourseList,
     getCourseAttach,
+    getCourseByCno,
+    update,
     getCourseNameList
 }

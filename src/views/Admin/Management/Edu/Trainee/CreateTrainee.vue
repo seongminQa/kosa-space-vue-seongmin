@@ -197,8 +197,13 @@ const route = useRoute();
 
 // 교육장과 교육과정을 이전의 라우터에서 받아옴.
 onMounted(() => {
+    console.log("교육생 등록 랜더링 완료");
     request.value.ecname = route.query.ecname || '';
     request.value.cname = route.query.cname || '';
+    console.log("route.query.ecname = " + route.query.ecname);
+    console.log("route.query.cname = " + route.query.cname);
+    console.log("request.value.ecname = " + request.value.ecname);
+    console.log("request.value.cname = " + request.value.cname);
 });
 
 

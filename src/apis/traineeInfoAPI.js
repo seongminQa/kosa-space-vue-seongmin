@@ -11,7 +11,7 @@ function traineeRegister(request) { // form-data 형식으로 데이터를 전�
     // console.log("ecname = " + ecname);
     // console.log("cname = " + cname);
     // return axios.post("/admin/trainee/register?ecname="+ecname+"&cname="+cname , request);
-    return axios.post("/admin/trainee/register", request, {
+    return axios.post("edu/admin/trainee/register", request, {
         headers: {
             'Content-Type': 'multipart/form-data'
         }
@@ -21,7 +21,7 @@ function traineeRegister(request) { // form-data 형식으로 데이터를 전�
 // 교육생 상세조회
 function traineeInfo(mid) {
     console.log("traineeInfoAPI traineeInfo 메소드 실행");
-    return axios.get("/admin/trainee/info");
+    return axios.get("/edu/admin/trainee/detail?mid=" + mid);
 }
 
 // 교육생 (교육장, 교육과정 기준) 목록 조회
