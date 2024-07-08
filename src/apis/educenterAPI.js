@@ -47,6 +47,25 @@ function educenterNameList() {
     return axios.get("/edu/center/name/list");
 }
 
+// 운영진 대시보드 -- inprogresscnt, scheduledcnt, completecnt
+function getTotalCourseCnt(ecname) {
+    console.log("getTotalCourseCnt 실행");
+    return axios.get("/edu/dashboard/course/totalcount?ecname=" + ecname);
+}
+
+// 운영진 대시보드 -- ecname 기준으로 교육상태에 따른 '교육과정 진행 현황 조회'
+// ecno, ecname, cno, cname, cstatus, cstartdate, cenddate, crequireddate 반환
+function getTotalCourseInfo(ecname, cstatus, pageNo){
+    console.log("getTotalCourseInfo 실행");
+    return axios.post("/edu/dashboard/course", "ecname=" + ecname + "&cstatus=" + cstatus + "&pageNo=" + pageNo);
+}
+
+// 운영진 대시보드 -- ecname 기준으로 현재 진행중인 교육과정의 '교육생 출결 현황 조회'
+function getTotalAttendanceInfo(ecname, pageNo, adate){
+    console.log("getTotalAttendanceInfo 실행");
+    return axios.post("/edu/dashboard/attendance", "ecname=" + ecname + "&pageNo=" + pageNo + "&adate=" + adate);
+}
+
 export default {
     create,
     update,
@@ -54,5 +73,8 @@ export default {
     getEducenterList,
     getEducenterAttach,
     educenterDelete,
-    educenterNameList
+    educenterNameList,
+    getTotalCourseCnt,
+    getTotalCourseInfo,
+    getTotalAttendanceInfo
 }

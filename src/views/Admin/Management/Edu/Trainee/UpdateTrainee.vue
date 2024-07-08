@@ -39,6 +39,19 @@
                                             style="font-size: 0.9em; height: 4px;">
                                             교육생 이미지는 필수입력사항입니다.
                                         </p>
+
+                                        <!-- 사람인 이미지 파일 -->
+                                        <div class="photo_wrap">
+                                            <span class="photo" id="myhome_profile_photo"></span>
+                                            <span class="photo_border"></span>
+                                            <button type="button" class="btn_photo" aria-label="프로필 편집/삭제"
+                                                aria-haspopup="menu"></button>
+                                            <div class="photo_edit_btn">
+                                                <button type="button" id="btnPhotoEdit">프로필 편집</button>
+                                                <button type="button" id="btnPhotoDelete">프로필 삭제</button>
+                                            </div>
+                                        </div>
+
                                     </div>
                                 </td>
 
@@ -526,5 +539,47 @@ select {
     justify-content: center;
     padding: 0;
     margin-top: 60px;
+}
+
+/* ------- */
+.person_update_sidearea .photo_wrap {
+    position: relative;
+    width: 96px;
+    height: 96px;
+}
+
+.photo_wrap .photo {
+    display: block;
+    overflow: hidden;
+    position: relative;
+    height: 100%;
+    border-radius: 100%;
+    box-sizing: border-box;
+    background: #d7dce5 url(//www.saraminimage.co.kr/sri/person/img/profile_noimg.png) no-repeat center center;
+}
+
+.photo_wrap .photo_border {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    border: 1px solid rgba(150, 160, 181, 0.2);
+    border-radius: 100%;
+    box-sizing: border-box;
+}
+
+
+.photo_wrap .btn_photo {
+    position: absolute;
+    right: -8px;
+    bottom: 0;
+    z-index: 2;
+    width: 32px;
+    height: 32px;
+    border: 1px solid #d7dce5;
+    border-radius: 100%;
+    background: #fff url(//www.saraminimage.co.kr/sri/person/ico/ico_camera.png) no-repeat center center;
 }
 </style>

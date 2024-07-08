@@ -175,7 +175,7 @@ let ecname = ref("교육장 선택");  // 값을 받아오면 배열 형식이 �
 let cname = ref("교육과정 선택");  // 값을 받아오면 배열 형식이 된다.
 let responseList = ref([]);
 
-// 등록된 교육과정 불러오기
+// 등록된 교육장 불러오기
 async function listCenterSet() {
     try {
         const response = await educenterAPI.educenterNameList();
@@ -202,15 +202,16 @@ async function traineeList(ecname, cname) {
     isLoading.value = true;
     try {
         console.log("traineeList 실행");
-        console.log("ecname.value = " + ecname.value);
-        console.log("cname.value = " + cname.value);
-        if (ecname.value === "undefined") ecname = "all";
-        if (cname.value === "undefined") cname = "all";
+        console.log("ecname = " + ecname);
+        console.log("cname = " + cname);
+        if (ecname === "undefined") ecname = "all";
+        if (cname === "undefined") cname = "all";
         const response = await traineeInfoAPI.getTraineeList(ecname, cname);
         responseList.value = response.data;
         isLoading.value = false;
     } catch (error) {
         console.log("traineeList 메소드 실패");
+        isLoading.value = true;
     }
 }
 
@@ -225,7 +226,7 @@ function centerChange() {
     // cname.value = "교육과정 선택";
     course.value.cname = '';
     // 교육장에 따른 교육과정 목록 가져오기
-    listCourseSet(educenter.value.ecname);
+    listCourseSet(educenter.value.ecname); // O
 
     if (educenter.value.ecname === "" || educenter.value.ecname === "전체") {
         courseShow.value = "btn disabled";

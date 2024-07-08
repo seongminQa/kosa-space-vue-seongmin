@@ -23,6 +23,6 @@ import { RouterView } from "vue-router";
 <style scoped>
 .wrapper {
   display: flex;
-  background-color: #f0f4fd;
+  background-color: #ffffff;
 }
 </style>
