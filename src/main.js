@@ -12,17 +12,12 @@ import PhosphorIcons from "@phosphor-icons/vue"
 
 // jquery import
 import jQuery from 'jquery'
-global.$ = jQuery
 
-// axiosConfig ?
+// axiosConfig --> 추후 뺄지 확인
 import axiosConfig from './apis/axiosConfig';
 
 // Daum postcode import
 import VueDaumPostcode from "vue-daum-postcode"
-
-// 브라우저 재실행시 인증 정보를 가져옴
-// 인증 정보를 store에 저장
-store.dispatch("loadAuth");
 
 createApp(App)
 .use(store)
@@ -31,3 +26,5 @@ createApp(App)
 .use(VueDaumPostcode)
 .use(jQuery)
 .mount('#app')
+
+global.$ = jQuery

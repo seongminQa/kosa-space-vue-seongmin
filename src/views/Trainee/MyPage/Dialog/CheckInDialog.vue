@@ -4,18 +4,16 @@
         <template v-slot:header>
             <p class="title" style="margin-top: 5%;">KOSA SPACE 출결 확인</p>
         </template>
-
+        
         <template v-slot:body>
-            <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds
-                }}초 입니다. (서버시간 기준)</p>
+            <p class="contents">현재 시간은 오전 {{ todayCheckIn.hours }}시 {{ todayCheckIn.minutes }}분 {{ todayCheckIn.seconds }}초 입니다. (서버시간 기준)</p>
             <p class="contents">입실처리하시겠습니까?</p>
             <p class="contents">퇴실 시 반드시 퇴실처리를 하셔야 출석으로 인정됩니다.</p>
         </template>
 
         <template v-slot:footer>
             <div class="footer">
-                <BaseButtonCancle type="button" class="btn btn-secondary" data-bs-dismiss="modal"
-                    style="margin-right: 5%;">아니오</BaseButtonCancle>
+                <BaseButtonCancle type="button" class="btn btn-secondary" data-bs-dismiss="modal" style="margin-right: 5%;">아니오</BaseButtonCancle>
                 <!-- 자식 컴포넌트에서 모달 안에 제출 버튼을 클릭했을 때 처리하는 이벤트 정의-->
                 <BaseButtonUpdate type="button" class="btn btn-primary" @click="handleChekinSubmit">네</BaseButtonUpdate>
             </div>
@@ -94,4 +92,5 @@ select {
     font-size: 1.1rem;
     text-align: center;
 }
+
 </style>
