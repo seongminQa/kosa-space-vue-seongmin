@@ -39,16 +39,6 @@
 
             <!-- 교육생 리스트 -->
             <TraineeList :ecname="ecname" :cname="cname" ref="$traineeList" />
-
-            <!-- 교육장과 교육과정이 있는데, 교육생이 등록되어 있지 않은 경우 ---------------------------------------------------------->
-            <div class="interview_list" v-if="cname !== '교육과정 선택'">
-                <!-- 면접 요청 리스트 없을 경우 -->
-                <div class="empty_data">
-                    <img src="//www.saraminimage.co.kr/sri/person/resume/img_empty_announce.png">
-                    <strong class="tit">해당 과정에 등록되어있는 교육생이 없습니다.</strong>
-                    <div class="txt">교육생을 등록해주세요!</div>
-                </div>
-            </div>
         </div>
     </div>
 </template>
@@ -58,8 +48,6 @@ import { useRouter, useRoute } from 'vue-router';
 import { ref, onMounted } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import courseAPI from '@/apis/courseAPI';
-import traineeInfoAPI from '@/apis/traineeInfoAPI';
-import axios from 'axios';
 
 import TraineeList from './components/TraineeList.vue'
 
@@ -73,8 +61,9 @@ const route = useRoute();
 onMounted(() => {
     console.group("onMounted 실행");
     listCenterSet();
-    // listCourseSet(educenter.value.ecname);
-    // traineeList(educenter.value.ecname, course.value.cname);
+
+    console.log("route.query.ecname = " + route.query.ecname);
+    console.log("route.query.cname = " + route.query.cname);
     console.groupEnd();
 });
 
@@ -82,15 +71,15 @@ onMounted(() => {
 let ecnames = ref("");
 
 // 교육장 리스트에서 선택한 값을 받아올 변수
-// let ecname = ref(route.query.ecname || '');
-let ecname = ref("");
+let ecname = ref(route.query.ecname || '');
+// let ecname = ref("");
 
 // 교육과정 리스트를 받아올 변수
 let cnames = ref("");
 
 // 교육과정 리스트에서 선택한 값을 받아올 변수
-// let cname = ref(route.query.cname || '');
-let cname = ref("");
+let cname = ref(route.query.cname || '');
+// let cname = ref("");
 
 // page number
 const pageNo = ref(route.query.PageNo || 1);
@@ -127,7 +116,7 @@ async function listCourseSet(ecname) {
 function centerChange() {
     console.group("교육장 필터 값 변경");
     console.log("ecname.value = " + ecname.value);
-
+    cname.value = '';
     // 교육장에 따른 교육과정 목록 가져오기
     listCourseSet(ecname.value); // O
 
@@ -139,7 +128,7 @@ function centerChange() {
     }
 
     // '선택된 교육장의 모든 교육과정' 교육생 목록을 불러옴.
-    // traineeList(ecname.value, "all");
+    cname.value = '';
     handleTraineeInfoList();
 }
 
@@ -150,19 +139,6 @@ function courseChange() {
     handleTraineeInfoList();
 }
 
-// 교육생 조회 눌렀을때
-function traineeDetail(e) {
-    console.log("e : " + e);
-    router.push({
-        path: '/admin/trainee/detail?mid=' + e,
-        query: {
-            mid: e,
-            ecname: ecname.value,
-            cname: cname.value,
-            pageNo: pageNo.value
-        }
-    })
-}
 
 // 교육생 등록 버튼을 눌렀을 시 path와 쿼리 스트링 값 전달
 function handleCreateBtn() {
@@ -175,20 +151,6 @@ function handleCreateBtn() {
         }
     })
 
-}
-
-// 교육생 수정 버튼을 눌렀을 시 path와 쿼리 스트링 값 전달
-function handleUpdateBtn(e) {
-    console.log("e : " + e);
-    router.push({
-        path: '/admin/trainee/update?mid=' + e,
-        query: {
-            mid: e,
-            ecname: ecname.value,
-            cname: cname.value,
-            pageNo: pageNo.value
-        }
-    })
 }
 
 // ----- 자식 컴포넌트의 함수를 부모 컴포넌트에서 호출 --------------------------------------------
