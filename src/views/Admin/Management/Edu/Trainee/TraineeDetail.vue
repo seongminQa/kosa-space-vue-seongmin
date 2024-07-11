@@ -1,5 +1,5 @@
 <template>
-    <div class="main p-3" style="margin-left: 25px;">
+    <div class="main p-3" style="margin-left: 25px; width: 1200px;">
         <div class="item-section mt-2 mb-2" style="font-size: 12px">
             <span>교육관리 > 교육과정 관리 > 교육생 상세조회</span>
         </div>
@@ -13,130 +13,198 @@
 
         <!-- contents -->
         <div v-if="isLoading === false" class="headingArea">
-            <div class="title">
+            <div class="title mb-3">
                 <h1 id="itemTitle">교육생 상세조회</h1>
+                <div id="itemDetail">| {{ ecname }} - {{ cname }}</div>
             </div>
 
             <!-- contents -->
-            <div class="container" style="text-align: left;">
+            <div class="container-fluid" style="text-align: left;">
                 <!-- 교육생 상세조회 수정폼 -->
 
-                <!-- 테이블 -->
-                <table class="table">
-                    <tbody>
-                        <tr>
-                            <td colspan="4">
-                                <div style="text-align:left">
-                                    <!-- <img :src="`${axios.defaults.baseURL}/edu/download/traineeattach/${route.query.mid}`"
-                                            width="110" height="150" class="ms-5"> -->
-                                    <img :src="src" width="110" height="150" class="ms-5">
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>교육생 이름</td>
-                            <td><input v-model.trim="traineeInfoData.mname"></td>
-                            <td>교육과정 명</td>
-                            <td><input v-model="traineeInfoData.cname"></td>
-                        </tr>
-                        <tr>
-                            <td>학력</td>
-                            <td>
-                                <select class="form-control p-3" id="tacademic" name="tacademic" style="width: 150px;"
-                                    v-model="traineeInfoData.tacademic" aria-readonly="true">
-                                    <option value="고등학교">고등학교</option>
-                                    <option value="대학교">대학교</option>
-                                </select>
+                <div class="d-flex">
+                    <div class="col-3">
+                        <img :src="src" width="200" height="250" class="rounded-5 mt-5 ms-5">
+                    </div>
 
-                                <!-- 고등학교를 선택했을 시 -->
-                                <div v-if="traineeInfoData.tacademic === '고등학교'">
-                                    <div class="form-floating mt-2" style="width: 150px">
-                                        <input v-model="traineeInfoData.academicName" type="text" class="form-control"
-                                            name="tschoolname" id="" value="" placeholder="" style="width: 150px;">
-                                        <label for="tschoolname" class="form-label">학교명</label>
+                    <div class="col-9">
+                        <!-- 테이블 -->
+                        <table class="table">
+                            <tbody>
+                                <tr>
+                                    <td style="width: 25%;">교육생 이름</td>
+                                    <td><input v-model.trim="traineeInfoData.mname"></td>
+                                    <td>교육과정 명</td>
+                                    <td><input v-model="traineeInfoData.cname"></td>
+                                </tr>
+                                <tr>
+
+                                </tr>
+                                <tr>
+                                    <td>학력</td>
+                                    <td>
+                                        <select class="form-control p-3" id="tacademic" name="tacademic"
+                                            style="width: 150px;" v-model.trim="traineeInfoData.tacademic"
+                                            aria-readonly="true">
+                                            <option value="고등학교">고등학교</option>
+                                            <option value="대학교">대학교</option>
+                                        </select>
+
+                                        <!-- 고등학교를 선택했을 시 -->
+                                        <div v-if="traineeInfoData.tacademic === '고등학교'">
+                                            <div class="form-floating mt-2" style="width: 150px">
+                                                <input v-model="traineeInfoData.academicName" type="text"
+                                                    class="form-control" name="tschoolname" id="" value=""
+                                                    placeholder="" style="width: 150px;">
+                                                <label for="tschoolname" class="form-label">학교명</label>
+                                            </div>
+                                        </div>
+
+                                        <!-- 대학교를 선택했을 시 -->
+                                        <div v-if="traineeInfoData.tacademic === '대학교'">
+                                            <div class="form-floating mt-2" style="width: 150px">
+                                                <input v-model="traineeInfoData.tschoolname" type="text"
+                                                    class="form-control" name="tschoolname" id="" value=""
+                                                    placeholder="" style="width: 150px;">
+                                                <label for="tschoolname" class="form-label">학교명</label>
+                                            </div>
+                                            <div class="form-floating mt-2" style="width: 150px">
+                                                <input v-model="traineeInfoData.tmajor" type="text" class="form-control"
+                                                    name="tmajor" id="" value="" placeholder="" style="width: 150px;">
+                                                <label for="tmajor" class="form-label">주전공</label>
+                                            </div>
+                                            <div class="form-floating mt-2" style="width: 150px">
+                                                <input v-model="traineeInfoData.tminor" type="text" class="form-control"
+                                                    name="tminor" id="" value="" placeholder="" style="width: 150px;">
+                                                <label for="tminor" class="form-label">부전공</label>
+                                            </div>
+                                            <!-- 학점에 대한 유효성 검사 #.### ? -->
+                                            <div class="form-floating mt-2" style="width: 150px">
+                                                <input v-model="traineeInfoData.tgrade" type="text" class="form-control"
+                                                    name="tgrade" id="" value="" placeholder="" style="width: 150px;">
+                                                <label for="tgrade" class="form-label">평균학점</label>
+                                            </div>
+                                        </div>
+                                    </td>
+                                    <td>전공여부</td>
+                                    <td>
+                                        <select v-model="traineeInfoData.tfield" style="width: 150px;">
+                                            <option value="true">전공</option>
+                                            <option value="false">비전공</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>나이</td>
+                                    <td><input type="text" v-model="traineeInfoData.tage"></td>
+                                    <td>성별</td>
+                                    <td>
+                                        <select v-model="traineeInfoData.tsex">
+                                            <option value="성별" selected disabled>성별 선택</option>
+                                            <option value="true">남자</option>
+                                            <option value="false">여자</option>
+                                        </select>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>주소</td>
+                                    <div class="td">
+                                        <input type="text" placeholder="우편번호" v-model.trim="traineeInfoData.tpostcode"
+                                            style="width:100px">
+                                        <br>
+                                        <input type="text" v-model.trim="traineeInfoData.taddress" placeholder="주소"
+                                            style="width:400px; margin-top: 3%;"><br>
+                                        <input type="text" v-model.trim="traineeInfoData.taddressdetail"
+                                            placeholder="상세주소" style="width:500px; margin-top: 3%;">
                                     </div>
-                                </div>
-                                <!-- 대학교를 선택했을 시 -->
-                                <div v-if="traineeInfoData.tacademic === '대학교'">
-                                    <div class="form-floating mt-2" style="width: 150px">
-                                        <input v-model="traineeInfoData.tschoolname" type="text" class="form-control"
-                                            name="tschoolname" id="" value="" placeholder="" style="width: 150px;">
-                                        <label for="tschoolname" class="form-label">학교명</label>
-                                    </div>
-                                    <div class="form-floating mt-2" style="width: 150px">
-                                        <input v-model="traineeInfoData.tmajor" type="text" class="form-control"
-                                            name="tmajor" id="" value="" placeholder="" style="width: 150px;">
-                                        <label for="tmajor" class="form-label">주전공</label>
-                                    </div>
-                                    <div class="form-floating mt-2" style="width: 150px">
-                                        <input v-model="traineeInfoData.tminor" type="text" class="form-control"
-                                            name="tminor" id="" value="" placeholder="" style="width: 150px;">
-                                        <label for="tminor" class="form-label">부전공</label>
-                                    </div>
-                                    <!-- 학점에 대한 유효성 검사 #.### ? -->
-                                    <div class="form-floating mt-2" style="width: 150px">
-                                        <input v-model="traineeInfoData.tgrade" type="text" class="form-control"
-                                            name="tgrade" id="" value="" placeholder="" style="width: 150px;">
-                                        <label for="tgrade" class="form-label">평균학점</label>
-                                    </div>
-                                </div>
-                            </td>
-                            <td>전공여부</td>
-                            <td>
-                                <select v-model="traineeInfoData.tfield" style="width: 150px;">
-                                    <option value="true">전공</option>
-                                    <option value="false">비전공</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>나이</td>
-                            <td><input type="text" v-model="traineeInfoData.tage"></td>
-                            <td>성별</td>
-                            <td>
-                                <select v-model="traineeInfoData.tsex">
-                                    <option value="성별" selected disabled>성별 선택</option>
-                                    <option value="true">남자</option>
-                                    <option value="false">여자</option>
-                                </select>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>주소</td>
-                            <div class="td">
-                                <input type="text" placeholder="우편번호" v-model.trim="traineeInfoData.tpostcode"
-                                    style="width:100px">
-                                <br>
-                                <input type="text" v-model.trim="traineeInfoData.taddress" placeholder="주소"
-                                    style="width:400px; margin-top: 3%;"><br>
-                                <input type="text" v-model.trim="traineeInfoData.taddressdetail" placeholder="상세주소"
-                                    style="width:500px; margin-top: 3%;">
-                            </div>
-                        </tr>
-                        <tr>
-                            <td>핸드폰 번호</td>
-                            <td colspan="3">
-                                <input v-model="traineeInfoData.mphone">
-                            </td>
-                        </tr>
-                        <tr>
-                            <td>교육상태</td>
-                            <td colspan="3">
-                                <select v-model="traineeInfoData.tstatus" style="width: 150px;">
-                                    <option :value="traineeInfoData.tstatus" selected>{{ traineeInfoData.tstatus }}
-                                    </option>
-                                </select>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                                </tr>
+                                <tr>
+                                    <td>핸드폰 번호</td>
+                                    <td colspan="3">
+                                        <input v-model="traineeInfoData.mphone">
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>교육상태</td>
+                                    <td colspan="3">
+                                        <select v-model="traineeInfoData.tstatus" style="width: 150px;">
+                                            <option :value="traineeInfoData.tstatus" selected>{{ traineeInfoData.tstatus
+                                                }}
+                                            </option>
+                                        </select>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+
+                </div>
+
                 <div class="btn_big_wrap" style="text-align:center">
                     <span class="me-3">
-                        <BaseButtonSubmit @click="handleSubmit">확인</BaseButtonSubmit>
+                        <BaseButtonSubmit>확인</BaseButtonSubmit>
                     </span>
                 </div>
+
             </div>
         </div>
+    </div>
+
+    <div class="container">
+        <table class="table">
+            <tbody class="align-middle">
+                <!-- 이름 -->
+                <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
+                    <th class="text-center">이름
+                    </th>
+                    <td class="p-3">
+                        <input type="text" class="form-control p-3" name="mname" id="mname"
+                            v-model.trim="traineeInfoData.mname" style="width: 300px;" readonly />
+                    </td>
+                </tr>
+                <!-- 이메일 -->
+                <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
+                    <th class="text-center">이메일</th>
+                    <td class="p-3">
+                        <div class="d-flex align-items-center mb-1">
+                            <input type="text" class="form-control p-3 me-2" name="memail" id="memail" value=""
+                                v-model.trim="traineeInfoData.memail" style="width: 250px;" readonly>
+                        </div>
+                        <div class="d-flex align-items-center mb-1">
+                            <input type="text" class="form-control p-3 me-2" name="emailFront" id="emailFront"
+                                style="width: 150px;" />
+                            <span> @ </span>
+                            <input type="text" class="form-control p-3 ms-2" name="emailBack" id="emailBack"
+                                style="width: 150px;" />
+                            <button class="btn btn-danger">취소</button>
+                        </div>
+                    </td>
+                </tr>
+                <!-- 휴대폰 번호 -->
+                <tr style="height:90px; border-bottom:1px solid #dcdcdc;">
+                    <th class="text-center">휴대폰번호
+                    </th>
+                    <td class="p-3">
+                        <div class="d-flex align-items-center mb-1">
+                            <!-- 휴대폰 앞 번호 -->
+                            <input type="text" class="form-control p-3" name="mphonenumber1" id="mphonenumber1"
+                                value="010" style="width: 80px;" readonly>
+                            <span class="ms-2 me-2">-</span>
+                            <!-- 휴대폰 중간 번호 -->
+                            <input type="text" class="form-control p-3" name="mphonenumber2" id="mphonenumber2"
+                                value="1234" style="width: 100px;" 
+                                placeholder="Mid Number">
+                            <span class="ms-2 me-2">-</span>
+                            <!-- 휴대폰 뒷 번호 -->
+                            <input type="text" class="form-control p-3" name="mphonenumber3" id="mphonenumber3"
+                                value="1234" style="width: 100px;" placeholder="End Number"
+                                required>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
@@ -144,7 +212,7 @@
 import BaseButtonCancle from '@/components/UIComponents/BaseButtonCancle.vue';
 import BaseButtonSubmit from '@/components/UIComponents/BaseButtonSubmit.vue';
 import { useRouter, useRoute } from 'vue-router';
-import { onMounted, ref, onBeforeMount } from 'vue';
+import { onMounted, ref, watch } from 'vue';
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
 import axios from 'axios';
 
@@ -195,16 +263,24 @@ async function traineeInfoSet(mid) {
 // 확인 버튼 // 이전에 있던 리스트로 돌아가기
 function handleSubmit() {
     router.push({
-        path: '/admin/trainee/list?ecname=' + ecname + "&cname=" + cname,
+        path: '/admin/trainee/list',
         query: {
-            detailEcname: ecname,
-            detailCname: cname,
+            ecname: ecname,
+            cname: cname,
         }
     });
 
     // router.back();
 }
 
+watch(route, (newRoute, oldRoute) => {
+    if (newRoute.query.ecname) { // 쿼리에 ecname 들어있으면 해당 페이지로 요청
+        console.log("newRoute.query.ecname = " + newRoute.query.ecname);
+        //totalAttendanceList(newRoute.query.ecname, newRoute.query.cname, "2024-07-10");
+        //filter.value.ecname =newRoute.query.ecname;
+        //filter.value.cname =newRoute.query.cname;
+    }
+});
 
 </script>
 
@@ -240,5 +316,67 @@ select {
 #itemTitle {
     font-weight: 700;
     font-size: 1.6rem;
+}
+
+body {
+    font-family: Arial, sans-serif;
+}
+
+.container {
+    width: 60%;
+    margin: 0 auto;
+    border: 1px solid #ccc;
+    padding: 20px;
+    box-shadow: 2px 2px 12px #aaa;
+    border-radius: 10px;
+}
+
+.section-title {
+    font-size: 1.2em;
+    margin-bottom: 10px;
+}
+
+.info-group {
+    margin-bottom: 20px;
+}
+
+.info-group label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 5px;
+}
+
+.info-group .info {
+    display: flex;
+    align-items: center;
+}
+
+.info-group .info span {
+    flex-grow: 1;
+}
+
+.info-group .info button {
+    margin-left: 10px;
+    padding: 5px 10px;
+    border: 1px solid #ccc;
+    background-color: #f0f0f0;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.marketing-consent {
+    display: flex;
+    align-items: center;
+}
+
+.marketing-consent input[type="checkbox"] {
+    margin-right: 10px;
+}
+
+#itemDetail {
+    font-weight: 600;
+    font-size: 1.4rem;
+    margin-top: 20px;
+    margin-bottom: 10px;
 }
 </style>

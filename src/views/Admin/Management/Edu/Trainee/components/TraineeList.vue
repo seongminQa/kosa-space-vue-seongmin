@@ -1,16 +1,19 @@
 <template>
     <div>
         <!-- 교육과정 선택했을때 교육과정에 따라 나오는 문구 -->
-        <div class="d-flex justify-content-between mt-1" style="height: 30px;">
+        <!-- <div class="d-flex justify-content-between mt-1" style="height: 30px;">
             <div class="d-flex" style="font-weight:bold; font-size: 1.2em;" v-show="educenter.ecname">
                 <p class="" v-show="educenter.ecname">|</p>
                 <p class="ms-3 me-3" v-show="educenter.ecname">{{ educenter.ecname }}</p>
                 <p class="ms-3 me-3" v-show="educenter.cname">></p>
                 <p class="ms-3" v-show="educenter.cname">{{ educenter.cname }}</p>
-                <!-- responseList는 객체들의 배열 값.. (수정할 필요가 있음) -->
-                <!-- <p v-if="responseList[0].cname === course.cname">
-                    ({{ responseList[0].cstartdate }} ~ {{ responseList[0].cenddate }})
-                </p> -->
+            </div> -->
+        <div class="d-flex justify-content-between mt-1" style="height: 30px;">
+            <div class="d-flex" style="font-weight:bold; font-size: 1.2em;" v-show="ecname">
+                <p class="" v-show="ecname">|</p>
+                <p class="ms-3 me-3" v-show="ecname">{{ ecname }}</p>
+                <p class="ms-3 me-3" v-show="cname">></p>
+                <p class="ms-3" v-show="cname">{{ cname }}</p>
             </div>
         </div>
         <div class="mt-3">
@@ -69,7 +72,7 @@
 
 <script setup>
 import traineeInfoAPI from '@/apis/traineeInfoAPI';
-import { ref, defineProps, defineExpose, onMounted } from 'vue';
+import { ref, defineProps, defineExpose, onMounted, watch } from 'vue';
 import axios from 'axios';
 import { useRouter, useRoute } from 'vue-router';
 
@@ -77,20 +80,36 @@ const router = useRouter();
 const route = useRoute();
 
 onMounted(() => {
-    console.group("트레이니 리스트 onMounted() 함수 실행");
-    traineeList(educenter.ecname, educenter.cname);
+    console.group("TraineeList.vue onMounted() 함수 실행");
     console.log("라우트 이동간의 쿼리 스트링 확인");
-    console.log("educenter.ecname = " + educenter.ecname);
-    console.log("educenter.cname = " + educenter.cname);
-    console.log("route.query.ecname = " + route.query.ecname);
-    console.log("route.query.cname = " + route.query.cname);
+
+    if (route.query.ecname) {
+        ecname.value = route.query.ecname;
+    } else {
+        ecname.value = educenter.ecname;
+    }
+
+    if (route.query.cname) {
+        cname.value = route.query.cname;
+    } else {
+        cname.value = educenter.cname;
+    }
+
+    // ecname, cname 값 확인
+    console.log("TraineeList.vue ecname = " + ecname.value);
+    console.log("TraineeList.vue cname = " + cname.value);
+    console.log("TraineeList.vue ecname = " + route.query.ecname);
+    console.log("TraineeList.vue cname = " + route.query.cname);
+
+
+    traineeList(ecname.value, cname.value);
     console.groupEnd();
 })
 
 // 부모 컴포넌트로 내보낼 메소드 정의
 defineExpose({ submit });
 
-// 부모 컴포넌트에서 ecname, cname 가져오기
+// 부모 컴포넌트(index.vue) 에서 ecname, cname 가져오기
 const educenter = defineProps(["ecname", "cname"]);
 
 // 교육생 등록, 수정, 상세 조회에서 전달 받는 ecname과 cname
@@ -102,18 +121,26 @@ let trainee = ref();
 // 받아오는 데이터의 길이 값을 받을 변수
 let length = ref();
 
+// 
+let ecname = ref();
+let cname = ref();
+
+
 // 교육생 리스트 가져오기
 async function traineeList(ecname, cname) {
     try {
-        console.log("traineeList 실행");
+        console.group("traineeList 실행")
         console.log("ecname = " + ecname);
         console.log("cname = " + cname);
-        if (ecname === "undefined") ecname = "all";
-        if (cname === "undefined") cname = "all";
+        if (ecname === undefined || ecname === '') ecname = "all";
+        if (cname === undefined || cname === '') cname = "all";
+        console.log("ecname = " + ecname);
+        console.log("cname = " + cname);
         const response = await traineeInfoAPI.getTraineeList(ecname, cname);
         trainee.value = response.data;
         // console.log("response.data.rnum = " + JSON.stringify(response.data));
         console.log("trainee.value = " + trainee.value.length);
+        console.groupEnd();
         length.value = trainee.value.length;
     } catch (error) {
         console.log("traineeList 메소드 실패");
@@ -128,8 +155,8 @@ function traineeDetail(e) {
         path: '/admin/trainee/detail',
         query: {
             mid: e,
-            ecname: educenter.ecname,
-            cname: educenter.cname
+            ecname: ecname.value,
+            cname: cname.value
         }
     })
 }
@@ -141,16 +168,41 @@ function handleUpdateBtn(e) {
         path: '/admin/trainee/update?mid=' + e,
         query: {
             mid: e,
-            ecname: educenter.ecname,
-            cname: educenter.cname,
+            ecname: ecname.value,
+            cname: cname.value,
         }
     })
 }
 
 // 부모 컴포넌트에 내보낼 메소드
 function submit() {
-    traineeList(educenter.ecname, educenter.cname);
+    console.group("TraineeList.vue의 submit()메소드 실행");
+    console.log("ecname.value = " + ecname.value);
+    console.log("cname.value = " + cname.value);
+
+    traineeList(ecname.value, cname.value);
+    console.groupEnd();
 }
+
+watch(
+    () => educenter.ecname,
+    (nv, ov) => {
+        console.log("educenter.ecname 값 변경 ov = " + ov);
+        console.log("educenter.ecname 값 변경 nv = " + nv);
+        ecname.value = nv;
+        traineeList(ecname.value, cname.value);
+    }
+)
+
+watch(
+    () => educenter.cname,
+    (nv, ov) => {
+        console.log("educenter.cname 값 변경 ov = " + ov);
+        console.log("educenter.cname 값 변경 nv = " + nv);
+        cname.value = nv;
+        traineeList(ecname.value, cname.value);
+    }
+)
 
 </script>
 

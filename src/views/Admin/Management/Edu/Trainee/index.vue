@@ -14,18 +14,17 @@
             <div class="d-flex justify-content-between mt-3">
                 <div class="d-flex">
                     <div class="InpBox">
-                        <select id="educenter" title="교육장 선택" v-model.trim="ecname" @change="centerChange()">
+                        <select id="educenter" title="교육장 선택" v-model.trim="ecname">
                             <option :value="''" disabled selected>교육장 선택</option>
-                            <option v-for="ecname in ecnames" :key="ecname" :value="ecname"> {{ ecname }}
+                            <option v-for="item in ecnames" :key="item" :value="item"> {{ item }}
                             </option>
                         </select>
                     </div>
 
                     <div class="InpBox" style="margin-left: 1%; width: 370px;">
-                        <select :class="courseShow" id="course" title="교육과정 선택" v-model.trim="cname"
-                            @change="courseChange()">
+                        <select :class="courseShow" id="course" title="교육과정 선택" v-model.trim="cname">
                             <option :value="''" disabled selected>교육과정 선택</option>
-                            <option v-for="cname in cnames" :key="cname" :value="cname"> {{ cname }}
+                            <option v-for="item in cnames" :key="item" :value="item"> {{ item }}
                             </option>
                         </select>
                     </div>
@@ -45,7 +44,7 @@
 
 <script setup>
 import { useRouter, useRoute } from 'vue-router';
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
 import educenterAPI from '@/apis/educenterAPI';
 import courseAPI from '@/apis/courseAPI';
 
@@ -59,11 +58,11 @@ const route = useRoute();
     그에 따른 교육과정들의 정보가 마운트되어야 함.
 */
 onMounted(() => {
-    console.group("onMounted 실행");
+    console.group("교육생 관리 onMounted 실행");
+    console.log("ecname = " + ecname.value);
+    console.log("cname = " + cname.value);
     listCenterSet();
-
-    console.log("route.query.ecname = " + route.query.ecname);
-    console.log("route.query.cname = " + route.query.cname);
+    // handleTraineeInfoList(); // 리스트
     console.groupEnd();
 });
 
@@ -81,14 +80,8 @@ let cnames = ref("");
 let cname = ref(route.query.cname || '');
 // let cname = ref("");
 
-// page number
-const pageNo = ref(route.query.PageNo || 1);
-
-// 서버에서 받아오는 값을 저장할 변수
-let responseList = ref();
-
 // 교육장 필터 선택에 따른 교육과정 select 태그 선택 여부
-let courseShow = ref("btn disabled");
+let courseShow = ref();
 
 // 등록된 교육장 불러오기
 async function listCenterSet() {
@@ -112,45 +105,15 @@ async function listCourseSet(ecname) {
     }
 }
 
-// 교육장 필터값 변경시
-function centerChange() {
-    console.group("교육장 필터 값 변경");
-    console.log("ecname.value = " + ecname.value);
-    cname.value = '';
-    // 교육장에 따른 교육과정 목록 가져오기
-    listCourseSet(ecname.value); // O
-
-    // 교육장의 값 변경에 따라 교육과정 필터 선택 버튼 활성화 / 비활성화
-    if (ecname.value === "" || ecname.value === "전체" || undefined) {
-        courseShow.value = "btn disabled";
-    } else {
-        courseShow.value = "";
-    }
-
-    // '선택된 교육장의 모든 교육과정' 교육생 목록을 불러옴.
-    cname.value = '';
-    handleTraineeInfoList();
-}
-
-// 교육과정 필터 값 변경시
-function courseChange() {
-    console.log("cname.value = " + cname.value);
-    // traineeList(ecname.value, cname.value);
-    handleTraineeInfoList();
-}
-
-
 // 교육생 등록 버튼을 눌렀을 시 path와 쿼리 스트링 값 전달
 function handleCreateBtn() {
     router.push({
         path: '/admin/trainee/register',
         query: {
             ecname: ecname.value,
-            cname: cname.value,
-            pageNo: pageNo.value
+            cname: cname.value
         }
     })
-
 }
 
 // ----- 자식 컴포넌트의 함수를 부모 컴포넌트에서 호출 --------------------------------------------
@@ -160,14 +123,33 @@ function handleTraineeInfoList() {
     $traineeList.value.submit();
 }
 
-// watch(educenter.value.ecname, (newEcname, oldEcname) => {
-//     if (newEcname === '' && newEcname === '전체') {
-//         courseShow.value = "btn disabled";
-//     } else {
-//         courseShow.value = "";
-//     }
-// });
+watch(
+    () => ecname.value,
+    (nv, ov) => {
+        console.log("index.vue의 ecname 값 변경 전 ov = " + ov);
+        console.log("index.vue의 ecname 값 변경 후 nv = " + nv);
+        ecname.value = nv;
+        listCourseSet(ecname.value);
+        cname.value = '';
 
+        if (ecname.value === "" || ecname.value === undefined) {
+            courseShow.value = "btn disabled";
+        } else {
+            courseShow.value = "";
+        }
+
+    }
+)
+
+watch(
+    () => cname.value,
+    (nv, ov) => {
+        console.log("index.vue의 cname 값 변경 전 ov = " + ov);
+        console.log("index.vue의 cname 값 변경 후 nv = " + nv);
+        cname.value = nv;
+
+    }
+)
 </script>
 
 <style scoped>
